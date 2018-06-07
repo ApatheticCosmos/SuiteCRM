@@ -5305,8 +5305,11 @@ class InboundEmail extends SugarBean
             } else {
                 //Assign Parent Values if references header mentions a sent email in the system
                 if(!empty($header->references)) {
-                        $references = explode(" ", $header->references);
-                        $GLOBALS['log']->fatal('InboundEmail References:'  . print_r($references, true));
+                    $references = explode(" ", $header->references);
+                    foreach ($references as $reference) {
+                        $reference = ltrim('<', $reference);
+                        $reference = strtok($reference, '@');
+                    }
                 }
             }
 
