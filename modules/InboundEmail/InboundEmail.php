@@ -5307,7 +5307,7 @@ class InboundEmail extends SugarBean
                 if(!empty($header->references)) {
                     $references = explode(" ", $header->references);
                     foreach ($references as $reference) {
-                        $referenceIdOnly = strtok(ltrim('<', $reference), '@');
+                        $referenceIdOnly = strtok(ltrim($reference, '<'), '@');
                     }
                 }
             }
