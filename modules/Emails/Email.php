@@ -2837,7 +2837,7 @@ class Email extends Basic
         $mail->Subject = $this->name;
 
         //Set MessageID for outgoing mail array
-        $mail->MessageID = '<' . $this->message_id . '@' . $sugar_config['host_name'] . '>';
+        $mail->MessageID = '<' . $this->message_id . '>';
 
         ///////////////////////////////////////////////////////////////////////
         ////	ATTACHMENTS

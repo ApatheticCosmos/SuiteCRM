@@ -175,7 +175,7 @@ class EmailsController extends SugarController
         $request = $_REQUEST;
 
         // Set message_id for email record in DB
-        $request['message_id'] = 'SUITECRM_' . md5('HELLO'.(idate("U")-1000000000).uniqid());
+        $request['message_id'] = 'SUITECRM_' . md5('HELLO'.(idate("U")-1000000000).uniqid()) . '@' . $sugar_config['host_name'];
 
         $this->bean = $this->bean->populateBeanFromRequest($this->bean, $request);
         $inboundEmailAccount = new InboundEmail();
