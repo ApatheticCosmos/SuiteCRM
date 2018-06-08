@@ -212,7 +212,11 @@
 				<slot style="{MAILBOX_TYPE_STYLE}">{MOD.LBL_REPLY_ASSIGNING_BEHAVIOR}:&nbsp;{TIPS.LBL_REPLY_ASSIGNING_BEHAVIOR_HELP}</span>
 			</td>
 			<td valign="top"  width="35%">
-				<span>&nbsp;</span>
+				<span>
+					<select name='assignment_behavior' tabindex='315' {IE_DISABLED}>
+						{REPLY_ASSIGNING_BEHAVIOR}
+					</select>
+				</span>
 			</td>
 			<td valign="top" scope="row" width="15%" NOWRAP>
 				{MOD.LBL_REPLY_TO_NAME}:&nbsp;

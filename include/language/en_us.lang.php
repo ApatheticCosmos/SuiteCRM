@@ -1012,6 +1012,11 @@ $app_list_strings = array(
         'move' => 'Move',
         'donothing' => 'Do Nothing',
     ),
+    'inboundmail_assign_replies_to_admin' => array(
+        'donothing' => 'Do Nothing',
+        'threadstarter' => 'Thread Starter',
+        'recordowner' => 'Associated Record Owner',
+    ),
 );
 
 $app_strings = array(
