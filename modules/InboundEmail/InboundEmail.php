@@ -5313,8 +5313,8 @@ class InboundEmail extends SugarBean
                             $results = $this->db->query($query, true);
                             $row = $this->db->fetchByAssoc($results);
                             if(!empty($row)) {
-                                $email->parent_id = $row->parent_id;
-                                $email->parent_type = $row->parent_type;
+                                $email->parent_id = $row['parent_id'];
+                                $email->parent_type = $row['parent_type'];
                                 break;
                             }
                         }
