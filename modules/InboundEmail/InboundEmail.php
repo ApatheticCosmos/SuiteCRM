@@ -5308,6 +5308,9 @@ class InboundEmail extends SugarBean
                     $references = explode(" ", $header->references);
                     foreach ($references as $reference) {
                         $referenceId = rtrim(ltrim($reference, '<'), '>');
+                        $query = 'SELECT id FROM emails WHERE emails.message_id = \'' . $this->referenceId . '\' and type = \'out\' and emails.deleted = 0';
+                        $results = $this->db->query($query, true);
+                        $row = $this->db->fetchByAssoc($results);
                     }
                 }
             }
