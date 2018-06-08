@@ -5319,7 +5319,8 @@ class InboundEmail extends SugarBean
                                     case 'donothing'; // Don't assign the email to a user
                                         break;
                                     case 'recordowner'; // Assign the email to the owner of the record the referenced email's parrent
-                                        $parentbean = BeanFactory::getBean($row['parent_type'], $row['parent_id']);
+                                        $parentBean = BeanFactory::getBean($row['parent_type'], $row['parent_id']);
+                                        $email->assigned_user_id = $parentBean->assigned_user_id;
                                         break;
                                     case 'threadstarter'; // Assign the email to the owner of the referenced email
                                         $email->assigned_user_id = $row['assigned_user_id'];
