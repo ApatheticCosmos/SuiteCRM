@@ -252,6 +252,7 @@ $dictionary['InboundEmail'] = array('table' => 'inbound_email', 'comment' => 'In
 			'name' => 'assignment_behavior',
 			'vname' => 'LBL_REPLY_ASSIGNING_BEHAVIOR',
 			'type' => 'varchar',
+			'len' => '16',
 			'required' => true,
 			'default' => 'donothing',
 			'reportable' => false,
