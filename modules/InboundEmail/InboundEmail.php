@@ -5309,18 +5309,31 @@ class InboundEmail extends SugarBean
                     foreach ($references as $reference) {
                         $referenceId = rtrim(ltrim($reference, '<'), '>');
                         if (strncmp($referenceId, "SUITECRM_", 9) === 0) {
-                            $query = 'SELECT id, parent_id, parent_type FROM emails WHERE emails.message_id = \'' . $referenceId . '\' and type = \'out\' and emails.deleted = 0 LIMIT 1';
+                            $query = 'SELECT id, assigned_user_id, parent_id, parent_type FROM emails WHERE emails.message_id = \'' . $referenceId . '\' and type = \'out\' and emails.deleted = 0 LIMIT 1';
                             $results = $this->db->query($query, true);
                             $row = $this->db->fetchByAssoc($results);
                             if(!empty($row)) {
-                                $email->parent_id = $row['parent_id'];
+                                $email->parent_id = $row['parent_id']; // set email parent to parent of referenced email
                                 $email->parent_type = $row['parent_type'];
+                                switch ($this->assignment_behavior) {
+                                    case 'donothing'; // Don't assign the email to a user
+                                        break;
+                                    case 'recordowner'; // Assign the email to the owner of the record the referenced email's parrent
+                                        $parentbean = BeanFactory::getBean($row['parent_type'], $row['parent_id']);
+                                        break;
+                                    case 'threadstarter'; // Assign the email to the owner of the referenced email
+                                        $email->assigned_user_id = $row['assigned_user_id'];
+                                        break;
+                                    default;
+                                        $GLOBALS['log']->error('Inbound Email misconfiguration. Assignment Behavior set to invalid value. Not assigning email.');
+                                        break;
+                                } // END switch ($this->assignment_behavior)
                                 break;
-                            }
-                        }
-                    }
-                }
-            }
+                            } // END if(!empty($row))
+                        } // END if (strncmp($referenceId, "SUITECRM_", 9) === 0)
+                    } // END foreach ($references as $reference)
+                } // END if(!empty($header->references) || !empty($header->in_reply_to))
+            } // END else
 
             // override $forDisplay w/user pref
             if ($forDisplay && $this->isAutoImport()) {
