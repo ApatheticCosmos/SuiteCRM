@@ -248,6 +248,15 @@ $dictionary['InboundEmail'] = array('table' => 'inbound_email', 'comment' => 'In
 			'reportable'=>false,
 			'comment' => 'Unique identifier'
 		),
+		'assignment_behavior' => array (
+			'name' => 'assignment_behavior',
+			'vname' => 'LBL_REPLY_ASSIGNING_BEHAVIOR',
+			'type' => 'varchar',
+			'required' => true,
+			'default' => 'donothing',
+			'reportable' => false,
+			'comment' => 'Incoming Email Assignment behavior'
+		),
 	), /* end fields() */
 	'indices' => array (
 		array(

@@ -166,5 +166,7 @@ $mod_strings = array(
     'LBL_SERVICE' => 'Service',
     'LBL_STORED_OPTIONS' => 'Stored Options',
     'LBL_GROUP_ID' => 'Group ID',
+    'LBL_REPLY_ASSIGNING_BEHAVIOR' => 'Assign Replies To',
+    'LBL_REPLY_ASSIGNING_BEHAVIOR_HELP' => 'When an incoming email is a reply to an email sent from SuiteCRM, who does the reply get assigned to.',
 );
 
