@@ -5304,7 +5304,7 @@ class InboundEmail extends SugarBean
                 $email->$rel->add($email->parent_id);
             } else {
                 //Assign Parent Values if references header mentions a sent email in the system
-                if(!empty($header->references) || (!empty($header->in_reply_to)) {
+                if(!empty($header->references) || !empty($header->in_reply_to)) {
                     $references = explode(" ",  implode(" ", $header->in_reply_to, $header->references));
                     foreach ($references as $reference) {
                         if (strncmp($reference, "SUITECRM_", 9) === 0) {
