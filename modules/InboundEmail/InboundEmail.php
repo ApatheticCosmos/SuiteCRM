@@ -5307,8 +5307,8 @@ class InboundEmail extends SugarBean
                 if(!empty($header->references) || !empty($header->in_reply_to)) {
                     $references = explode(" ",  $header->in_reply_to . " " . $header->references);
                     foreach ($references as $reference) {
-                        if (strncmp($reference, "SUITECRM_", 9) === 0) {
-                            $referenceId = rtrim(ltrim($reference, '<'), '>');
+                        $referenceId = rtrim(ltrim($reference, '<'), '>');
+                        if (strncmp($referenceId, "SUITECRM_", 9) === 0) {
                             $query = 'SELECT id, parent_id, parent_type FROM emails WHERE emails.message_id = \'' . $referenceId . '\' and type = \'out\' and emails.deleted = 0 LIMIT 1';
                             $results = $this->db->query($query, true);
                             $row = $this->db->fetchByAssoc($results);
