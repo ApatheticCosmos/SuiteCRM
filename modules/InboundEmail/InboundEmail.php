@@ -5304,13 +5304,20 @@ class InboundEmail extends SugarBean
                 $email->$rel->add($email->parent_id);
             } else {
                 //Assign Parent Values if references header mentions a sent email in the system
-                if(!empty($header->references)) {
-                    $references = explode(" ", $header->references);
+                if(!empty($header->references) || (!empty($header->in_reply_to)) {
+                    $references = explode(" ",  $header->in_reply_to . " " . $header->references);
                     foreach ($references as $reference) {
-                        $referenceId = rtrim(ltrim($reference, '<'), '>');
-                        $query = 'SELECT id FROM emails WHERE emails.message_id = \'' . $referenceId . '\' and type = \'out\' and emails.deleted = 0';
-                        $results = $this->db->query($query, true);
-                        $row = $this->db->fetchByAssoc($results);
+                        if (strncmp($reference, "SUITECRM_", 9) === 0) {
+                            $referenceId = rtrim(ltrim($reference, '<'), '>');
+                            $query = 'SELECT id, parent_id, parent_type FROM emails WHERE emails.message_id = \'' . $referenceId . '\' and type = \'out\' and emails.deleted = 0 LIMIT 1';
+                            $results = $this->db->query($query, true);
+                            $row = $this->db->fetchByAssoc($results);
+                            if(!empty($row)) {
+                                $email->parent_id = $row->parent_id;
+                                $email->parent_type = $row->parent_type;
+                                break;
+                            }
+                        }
                     }
                 }
             }
