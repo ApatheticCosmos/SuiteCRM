@@ -371,7 +371,7 @@ if(!empty($create_case_email_template)) {
 	$xtpl->assign("CREATE_CASE_EDIT_TEMPLATE","visibility:hidden");
 }
 
-// Email Reply ASSIGNMENT
+// Email Reply Assignment
 $xtpl->assign('REPLY_ASSIGNING_BEHAVIOR', get_select_options_with_id($app_list_strings['inboundmail_assign_replies_to_admin'], $focus->assignment_behavior));
 
 $quicksearch_js = "";
