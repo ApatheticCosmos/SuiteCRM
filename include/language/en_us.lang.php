@@ -1014,7 +1014,7 @@ $app_list_strings = array(
     ),
     'inboundmail_assign_replies_to_admin' => array(
         'donothing' => 'Do Nothing',
-        'threadstarter' => 'Thread Starter',
+        'repliedtoowner' => 'Replied to Email Owner',
         'recordowner' => 'Associated Record Owner',
     ),
 );
