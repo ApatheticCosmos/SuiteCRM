@@ -171,7 +171,7 @@ class EmailsController extends SugarController
     {
         global $current_user;
         global $app_strings;
-	global $sugar_config;
+        global $sugar_config;
 
         $request = $_REQUEST;
 
