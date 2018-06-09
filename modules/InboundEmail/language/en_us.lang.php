@@ -167,6 +167,6 @@ $mod_strings = array(
     'LBL_STORED_OPTIONS' => 'Stored Options',
     'LBL_GROUP_ID' => 'Group ID',
     'LBL_REPLY_ASSIGNING_BEHAVIOR' => 'Assign Replies To',
-    'LBL_REPLY_ASSIGNING_BEHAVIOR_HELP' => 'When an incoming email is a reply to an email sent from SuiteCRM, who does the reply get assigned to:<br>Do Nothing: Default Behavior. The email is assigned to no one.<br>Thread Starter: The email is assigned to the owner of the email that it is replying to, or the last email sent from SuiteCRM in the thread.<br>Associated Record Owner: The email is assigned to the owner of the record that the replied to email is related to.',
+    'LBL_REPLY_ASSIGNING_BEHAVIOR_HELP' => 'When an incoming email is a reply to an email sent from SuiteCRM, who does the reply get assigned to:<br><br><b>Do Nothing:</b> Default Behavior. The email is assigned to no one.<br><br><b>Thread Starter:</b> The email is assigned to the owner of the email that it is replying to, or the last email sent from SuiteCRM in the thread.<br><br><b>Associated Record Owner:</b> The email is assigned to the owner of the record that the replied to email is related to.',
 );
 
