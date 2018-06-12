@@ -2790,7 +2790,7 @@ class Email extends Basic
 
         
         
-        if ($mail->oe->type === 'system') {
+        if (($mail->oe->type === 'system') && (!isset($sugar_config['email_allow_send_as_user']) && (!$sugar_config['email_allow_send_as_user']))) {
             $mail->From = 
             $sender = 
             $ReplyToAddr = $mail->oe->smtp_from_addr;
@@ -2835,6 +2835,9 @@ class Email extends Basic
 
         //$mail->Subject = html_entity_decode($this->name, ENT_QUOTES, 'UTF-8');
         $mail->Subject = $this->name;
+
+        //Set MessageID for outgoing mail array
+        $mail->MessageID = '<' . $this->message_id . '>';
 
         ///////////////////////////////////////////////////////////////////////
         ////	ATTACHMENTS

@@ -171,8 +171,12 @@ class EmailsController extends SugarController
     {
         global $current_user;
         global $app_strings;
+        global $sugar_config;
 
         $request = $_REQUEST;
+
+        // Set message_id for email record in DB
+        $request['message_id'] = 'SUITECRM_' . md5('HELLO'.(idate("U")-1000000000).uniqid()) . '@' . $sugar_config['host_name'];
 
         $this->bean = $this->bean->populateBeanFromRequest($this->bean, $request);
         $inboundEmailAccount = new InboundEmail();
@@ -450,22 +454,29 @@ class EmailsController extends SugarController
             }
         }
 
-        if ($sugar_config['email_allow_send_as_user']) {
-            $data[] = array(
-                'type' => 'personal',
-                'id' => $current_user->id,
-                'attributes' => array(
-                    'from' => $current_user->email1,
-                    'name' => $current_user->full_name,
-                ),
-                'prepend' => $prependSignature,
-                'isPersonalEmailAccount' => true,
-                'isGroupEmailAccount' => false,
-                'emailSignatures' => array(
-                    'html' => utf8_encode(html_entity_decode($defaultEmailSignature['signature_html'])),
-                    'plain' => $defaultEmailSignature['signature'],
-                ),
-            );
+        if (isset($sugar_config['email_allow_send_as_user']) && ($sugar_config['email_allow_send_as_user'])) {
+            require_once ('include/SugarEmailAddress/SugarEmailAddress.php');
+            $sugarEmailAddress = new SugarEmailAddress();
+            $userAddressesArr = $sugarEmailAddress->getAddressesByGUID($current_user->id, 'Users');
+            foreach ($userAddressesArr as $userAddress) {
+                $data[] = array(
+                    'type' => 'personal',
+                    'id' => $userAddress['email_address_id'],
+                    'attributes' => array(
+                        'from' => ($userAddress['reply_to_address'] === '1') ? $current_user->email1 : $userAddress['email_address'],
+                        'reply_to' => $userAddress['email_address'],
+                        'name' => $current_user->full_name,
+                    ),
+                    'prepend' => $prependSignature,
+                    'isPersonalEmailAccount' => true,
+                    'isGroupEmailAccount' => false,
+                    'emailSignatures' => array(
+                        'html' => utf8_encode(html_entity_decode($defaultEmailSignature['signature_html'])),
+                        'plain' => $defaultEmailSignature['signature'],
+                    ),
+                );
+            }
+            unset($userAddress);
         }
 
         $oe = new OutboundEmail();
@@ -476,7 +487,7 @@ class EmailsController extends SugarController
                 'id' => $system->id,
                 'attributes' => array(
                     'reply_to' => $system->smtp_from_addr,
-                    'from' => $system->mail_smtpuser,
+                    'from' => $system->smtp_from_addr,
                     'name' => $system->smtp_from_name,
                     'oe' => $system->mail_smtpuser,
                 ),
