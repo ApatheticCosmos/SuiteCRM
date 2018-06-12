@@ -171,8 +171,12 @@ class EmailsController extends SugarController
     {
         global $current_user;
         global $app_strings;
+        global $sugar_config;
 
         $request = $_REQUEST;
+
+        // Set message_id for email record in DB
+        $request['message_id'] = 'SUITECRM_' . md5('HELLO'.(idate("U")-1000000000).uniqid()) . '@' . $sugar_config['host_name'];
 
         $this->bean = $this->bean->populateBeanFromRequest($this->bean, $request);
         $inboundEmailAccount = new InboundEmail();
@@ -483,7 +487,7 @@ class EmailsController extends SugarController
                 'id' => $system->id,
                 'attributes' => array(
                     'reply_to' => $system->smtp_from_addr,
-                    'from' => $system->mail_smtpuser,
+                    'from' => $system->smtp_from_addr,
                     'name' => $system->smtp_from_name,
                     'oe' => $system->mail_smtpuser,
                 ),
