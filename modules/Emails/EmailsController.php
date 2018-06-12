@@ -463,7 +463,7 @@ class EmailsController extends SugarController
                     'type' => 'personal',
                     'id' => $userAddress['email_address_id'],
                     'attributes' => array(
-                        'from' => ($userAddress['reply_to_addr'] == '1') ? $current_user->email1 : $userAddress['email_address'],
+                        'from' => ($userAddress['reply_to_address'] == '1') ? $current_user->email1 : $userAddress['email_address'],
                         'reply_to' => $userAddress['email_address'],
                         'name' => $current_user->full_name,
                     ),
