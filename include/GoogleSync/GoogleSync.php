@@ -511,6 +511,7 @@ class GoogleSync
      * Helper function for pushPullSkip.
      *
      * When given a single calendar object, determine its type and return an action.
+     * At least one of the params is required.
      *
      * @param Meeting $event_local (optional) Meeting Bean
      * @param \Google_Service_Calendar_Event $event_remote (optional) Google_Service_Calendar_Event Object
