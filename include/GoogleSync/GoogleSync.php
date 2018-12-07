@@ -525,11 +525,11 @@ class GoogleSync
             return false;
         }
         if (empty($event_local)) {
-            if ($event_remote->status !== 'cancelled') {
-                // We only pull if the Google Event is not deleted/cancelled
-                return "pull";
-            } else {
+            if ( $event_remote->status === 'cancelled' || is_null($event_remote->getStart()->getDateTime()) ) {
+                // We only pull if the Google Event is not deleted/cancelled and not an all day event.
                 return "skip";
+            } else {
+                return "pull";
             }
         } else {
             if ($event_local->deleted == '0') {
@@ -847,13 +847,16 @@ class GoogleSync
             return false;
         }
 
-        $event_local->name = $event_remote->getSummary();
-        $event_local->description = $event_remote->getDescription();
-        $event_local->location = $event_remote->getLocation();
+        $event_local->name = (string) $event_remote->getSummary();
+        $event_local->description = (string) $event_remote->getDescription();
+        $event_local->location = (string) $event_remote->getLocation();
 
-        // Get Start/End/Duration from Google Event
-        $starttime = strtotime($event_remote->getStart()['dateTime']);
-        $endtime = strtotime($event_remote->getEnd()['dateTime']);
+        // Get Start/End/Duration from Google Event TODO: This is where all day event conversion will need to happen.
+        $starttime = strtotime($event_remote->getStart()->getDateTime());
+        $endtime = strtotime($event_remote->getEnd()->getDateTime());
+        if (!$starttime || !$endtime) { // Verify we have valid time objects
+            throw new Exception('Unable to retrieve times from Google Event');
+        }
         $diff = abs($starttime - $endtime);
         $tmins = $diff / 60;
         $hours = floor($tmins / 60);
@@ -1226,11 +1229,11 @@ class GoogleSync
         try {
             $ret = $this->setSyncUsers();
         } catch (Exception $e) {
-            $this->logger->error('Exception: ' . $e->getMessage());
+            $this->logger->error(__FILE__ . ':' . __LINE__ . ' ' . __METHOD__ . '- setSyncUsers() Exception: ' . $e->getMessage());
         }
 
         if (!$ret) {
-            $this->logger->warn('There is no user to sync..');
+            $this->logger->warn(__FILE__ . ':' . __LINE__ . ' ' . __METHOD__ . ' - There is no user to sync..');
         }
 
         // We count failures here
@@ -1239,19 +1242,20 @@ class GoogleSync
         // Then we go though the array and sync the users with doSync()
         if (isset($this->users) && !empty($this->users)) {
             foreach (array_keys($this->users) as $key) {
+                $return = null;
                 try {
                     $return = $this->doSync($key);
                 } catch (Exception $e) {
-                    $this->logger->error('doSync() Exception: ' . $e->getMessage());
+                    $this->logger->error(__FILE__ . ':' . __LINE__ . ' ' . __METHOD__ . ' - doSync() Exception: ' . $e->getMessage());
                 }
                 if (!$return) {
-                    $this->logger->error('Something went wrong syncing for user id: ' . $key);
+                    $this->logger->error(__FILE__ . ':' . __LINE__ . ' ' . __METHOD__ . ' - Something went wrong syncing for user id: ' . $key);
                     $failures++;
                 }
             }
         }
         if ($failures > 0) {
-            $this->logger->warn($failures . ' failure(s) found at syncAllUsers method.');
+            $this->logger->warn(__FILE__ . ':' . __LINE__ . ' ' . __METHOD__ . ' - ' . $failures . ' failure(s) found at syncAllUsers method.');
             return false;
         } else {
             return true;
