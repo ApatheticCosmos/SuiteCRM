@@ -847,14 +847,19 @@ class GoogleSync
             return false;
         }
 
-        $event_local->name = (string) $event_remote->getSummary();
+        if (is_null($event_remote->getSummary())) { // Google doesn't require titles on events.
+            $event_local->name = '(No title)'; // This is what they look like in google, so it should be seamless.
+        } else {
+            $event_local->name = (string) $event_remote->getSummary();
+        }
+
         $event_local->description = (string) $event_remote->getDescription();
         $event_local->location = (string) $event_remote->getLocation();
 
         // Get Start/End/Duration from Google Event TODO: This is where all day event conversion will need to happen.
         $starttime = strtotime($event_remote->getStart()->getDateTime());
         $endtime = strtotime($event_remote->getEnd()->getDateTime());
-        if (!$starttime || !$endtime) { // Verify we have valid time objects
+        if (!$starttime || !$endtime) { // Verify we have valid time objects (All day events will fail here.)
             throw new Exception('Unable to retrieve times from Google Event');
         }
         $diff = abs($starttime - $endtime);

@@ -368,6 +368,11 @@ class GoogleSyncTest extends \SuiteCRM\StateCheckerUnitAbstract
         $Google_Event->setSummary('Unit Test Event');
         $Google_Event->setDescription('Unit Test Event');
 
+        // The event needs a start time method to pass
+        $startDateTime = new Google_Service_Calendar_EventDateTime;
+        $startDateTime->setDateTime(date(DATE_ATOM, strtotime('2018-01-01 13:00:00 UTC')));
+        $Google_Event->setStart($startDateTime);
+
         // Test with just an active Meeting. Should return 'push'
         $this->assertEquals('push', $object->pushPullSkip($CRM_Meeting, null));
 
