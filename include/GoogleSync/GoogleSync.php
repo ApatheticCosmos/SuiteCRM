@@ -245,13 +245,11 @@ class GoogleSync
             $refreshToken = $client->getRefreshToken();
             if (empty($refreshToken)) {
                 throw new Exception('Refresh token is missing');
-                return false;
             } else {
                 try {
                     $client->fetchAccessTokenWithRefreshToken($refreshToken);
                 } catch (Exception $e) {
                     $this->logger->fatal('Caught exception: ',  $e->getMessage());
-                    return false;
                 }
             }
             // Save new token to user preference
@@ -812,23 +810,14 @@ class GoogleSync
             return false;
         }
 
-        // Disable all popup reminders for the SuiteCRM meeting
+        // Disable all popup reminders for the SuiteCRM meeting, and mark reminders where email is disabled as deleted.
         $eventIdQuoted = $this->db->quoted($event_id);
-        $sql = sprintf("UPDATE reminders SET popup = '0' WHERE related_event_module_id = %s AND deleted = '0'", $eventIdQuoted);
+        $sql = sprintf("UPDATE reminders SET popup = '0', deleted = CASE WHEN email = '0' THEN '1' ELSE deleted	END WHERE related_event_module_id = %s AND deleted = '0'", $eventIdQuoted);
         $res = $this->db->query($sql);
         if (!$res) {
             $this->logger->fatal(__FILE__ . ':' . __LINE__ . ' ' . __METHOD__ . ' - ' . 'SQL Failure!');
             return false;
         }
-
-        // Mark all reminders where both popup and email are disabled as deleted.
-        $sql = sprintf("UPDATE reminders SET deleted = '1' WHERE popup = '0' AND email = '0' AND related_event_module_id = %s AND deleted = '0'", $eventIdQuoted);
-        $res = $this->db->query($sql);
-        if (!$res) {
-            $this->logger->fatal(__FILE__ . ':' . __LINE__ . ' ' . __METHOD__ . ' - ' . 'SQL Failure!');
-            return false;
-        }
-
         return true;
     }
 
@@ -1107,7 +1096,6 @@ class GoogleSync
             default:
                 $this->logger->fatal(__FILE__ . ':' . __LINE__ . ' ' . __METHOD__ . ' - ' . 'Unknown Action: ' . $action . ' for record: ' . $title);
                 throw new \InvalidArgumentException('Invalid Action');
-                return false;
         }
     }
 
