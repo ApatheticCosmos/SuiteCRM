@@ -1065,13 +1065,13 @@ class GoogleSync
     /**
      * Helper function for doSync
      * 
+     * @param string $action The action to take with the two events
      * @param Meeting $meeting The CRM Meeting
      * @param \Google_Service_Calendar_Event $event The Google Event
-     * @param string $action The action to take with the two events
      * 
      * @return bool Success/Failure
      */
-    protected function doAction(Meeting $meeting = null, Google_Service_Calendar_Event $event = null, $action)
+    protected function doAction($action, Meeting $meeting = null, Google_Service_Calendar_Event $event = null)
     {
         if ( !empty($meeting) && !empty($event) ) {
             $title = $meeting->name . " / " . $event->getSummary();
@@ -1158,7 +1158,7 @@ class GoogleSync
             }
             
             $action = $this->pushPullSkip($meeting, $gevent);
-            $actionResult = $this->doAction($meeting, $gevent, $action);
+            $actionResult = $this->doAction($action, $meeting, $gevent);
 
             if (!$actionResult) {
                 $this->logger->info(__FILE__ . ':' . __LINE__ . ' ' . __METHOD__ . ' - doAction Returned: ' . $actionResult); 
@@ -1178,7 +1178,7 @@ class GoogleSync
             }
 
             $action = $this->pushPullSkip($meeting, $gevent);
-            $actionResult = $this->doAction($meeting, $gevent, $action);
+            $actionResult = $this->doAction($action, $meeting, $gevent);
 
             if (!$actionResult) {
                 $this->logger->info(__FILE__ . ':' . __LINE__ . ' ' . __METHOD__ . ' - doAction Returned: ' . $actionResult); 
