@@ -187,7 +187,12 @@ class GoogleSyncBase
         }
 
         // New Google Client and refresh the token if needed
-        $client = $this->getGoogleClient($accessToken);
+        try {
+            $client = $this->getGoogleClient($accessToken);
+        } catch (Exception $e) {
+            $this->logger->fatal('Caught exception: ',  $e->getMessage());
+        }
+        
 
         if (!$client) {
             return false;
@@ -216,20 +221,20 @@ class GoogleSyncBase
         if ($client->isAccessTokenExpired()) {
             $this->logger->info(__FILE__ . ':' . __LINE__ . ' ' . __METHOD__ . ' - ' . 'Refreshing Access Token');
             $refreshToken = $client->getRefreshToken();
-            if (empty($refreshToken)) {
-                throw new Exception('Refresh token is missing');
-            } else {
+            if (!empty($refreshToken)) {
                 try {
                     $client->fetchAccessTokenWithRefreshToken($refreshToken);
                 } catch (Exception $e) {
                     $this->logger->fatal('Caught exception: ',  $e->getMessage());
+                    throw $e;
                 }
+                // Save new token to user preference
+                $this->workingUser->setPreference('GoogleApiToken', base64_encode(json_encode($client->getAccessToken())), 'GoogleSync');
+                $this->workingUser->savePreferencesToDB();    
+            } else { // (!empty($refreshToken))
+                throw new Exception('Refresh token is missing');
             }
-            // Save new token to user preference
-            $this->workingUser->setPreference('GoogleApiToken', base64_encode(json_encode($client->getAccessToken())), 'GoogleSync');
-            $this->workingUser->savePreferencesToDB();
         }
-
         return $client;
     }
 
