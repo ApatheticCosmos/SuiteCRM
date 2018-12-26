@@ -35,7 +35,55 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
 
     // GoogleSyncBase.php
 
- 
+
+    public function testSetSyncUsers()
+    {
+        $this->markTestIncomplete('BROKEN! SEE: https://github.com/salesagility/SuiteCRM/pull/6539#issuecomment-449146469'); // TEMP DISABLE THIS TEST
+        $state = new SuiteCRM\StateSaver();
+        $state->pushTable('users');
+        $state->pushTable('user_preferences');
+
+        $method = self::$reflection->getMethod('setSyncUsers');
+        $method->setAccessible(true);
+
+        $object = new GoogleSync();
+
+        // base64 encoded of {"web":"test"}
+        $json = 'eyJ3ZWIiOiJ0ZXN0In0=';
+
+        $user1 = new User();
+        $user1->last_name = 'UNIT_TESTS1';
+        $user1->user_name = 'UNIT_TESTS1';
+        $user1->full_name = 'UNIT_TESTS1';
+        $user1->save(false);
+        $user1->setPreference('GoogleApiToken', $json, false, 'GoogleSync');
+        $user1->setPreference('syncGCal', 1, 0, 'GoogleSync');
+        $user1->savePreferencesToDB();
+
+        $user2 = new User();
+        $user2->last_name = 'UNIT_TESTS2';
+        $user2->user_name = 'UNIT_TESTS2';
+        $user2->full_name = 'UNIT_TESTS2';
+        $user2->save(false);
+        $user2->setPreference('GoogleApiToken', $json, false, 'GoogleSync');
+        $user2->setPreference('syncGCal', 1, 0, 'GoogleSync');
+        $user2->savePreferencesToDB();
+
+        $countOfSyncUsers = $method->invoke($object);
+
+        $state->popTable('users');
+        $state->popTable('user_preferences');
+
+        $this->assertGreaterThanOrEqual(2, $countOfSyncUsers);
+    }
+
+    public function testSyncAllUsers()
+    {
+        $object = new GoogleSync();
+        $ret = $object->syncAllUsers();
+
+        $this->assertEquals(true, $ret);
+    }
 
     //GoogleSyncHelper.php
 
