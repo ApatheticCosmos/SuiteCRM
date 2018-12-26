@@ -77,7 +77,7 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
 
     public function testGetAuthJson()
     {
-        $state = new \SuiteCrm\StateSaver();
+        $state = new SuiteCrm\StateSaver();
         $state->pushGlobals();
 
         $method = self::$reflection->getMethod('getAuthJson');
@@ -147,7 +147,7 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
 
     public function testGetUserMeetings()
     {
-        $state = new \SuiteCRM\StateSaver();
+        $state = new SuiteCRM\StateSaver();
         $state->pushTable('meetings');
         $state->pushTable('meetings_cstm');
         $state->pushTable('users');
@@ -292,7 +292,7 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
 
     public function testGetMeetingByEventId()
     {
-        $state = new \SuiteCRM\StateSaver();
+        $state = new SuiteCRM\StateSaver();
         $state->pushTable('meetings');
         $state->pushTable('meetings_cstm');
         $state->pushTable('vcals');
@@ -542,7 +542,7 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
 
     public function testCreateSuitecrmMeetingEvent()
     {
-        $state = new \SuiteCRM\StateSaver();
+        $state = new SuiteCRM\StateSaver();
         $state->pushTable('reminders');
         $state->pushTable('reminders_invitees');
         $state->pushTable('tracker');
@@ -912,7 +912,7 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
     public function testSetSyncUsers()
     {
         $this->markTestIncomplete('BROKEN! SEE: https://github.com/salesagility/SuiteCRM/pull/6539#issuecomment-449146469'); // TEMP DISABLE THIS TEST
-        $state = new \SuiteCRM\StateSaver();
+        $state = new SuiteCRM\StateSaver();
         $state->pushTable('users');
         $state->pushTable('user_preferences');
 
