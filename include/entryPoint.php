@@ -54,7 +54,7 @@ if (!defined('PHP_VERSION_ID')) {
     define('PHP_VERSION_ID', ($version_array[0] * 10000 + $version_array[1] * 100 + $version_array[2]));
 }
 
-if (empty($GLOBALS['installing']) && !file_exists('config.php')) {
+if (empty($GLOBALS['installing']) && !file_exists(dirname(__FILE__) . '/../config.php')) {
     header('Location: install.php');
     throw new Exception('SuiteCRM is not installed. Entry point needs an installed SuiteCRM, please install first.');
 }
