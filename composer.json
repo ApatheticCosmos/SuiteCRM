@@ -8,11 +8,11 @@
   "config": {
     "vendor-dir": "vendor",
     "platform": {
-      "php": "7.2.0"
+      "php": "7.0.0"
     }
   },
   "require": {
-    "php": ">=7.2.0",
+    "php": ">=7.0.0",
     "ext-json": "*",
     "ext-gd": "*",
     "ext-curl": "*",
