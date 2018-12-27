@@ -36,7 +36,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
     // GoogleSyncBase.php
 
     /**
-     * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
     public function test__construct()
@@ -80,7 +79,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
     }
 
     /**
-     * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
     public function testGetAuthJson()
@@ -110,7 +108,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
     }
 
     /**
-     * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
     public function testSetClient()
@@ -136,7 +133,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
     }
 
     /**
-     * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
     public function testGetGoogleClient()
@@ -151,7 +147,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
     }
 
     /**
-     * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
     public function testInitUserService()
@@ -166,7 +161,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
     }
 
     /**
-     * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
     public function testGetUserMeetings()
@@ -253,7 +247,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
     }
 
     /**
-     * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
     public function testSetUsersGoogleCalendar()
@@ -265,7 +258,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
     }
 
     /**
-     * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
     public function testGetSuiteCRMCalendar()
@@ -286,7 +278,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
     }
 
     /**
-     * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
     public function testGetUserGoogleEvents()
@@ -298,7 +289,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
     }
 
     /**
-     * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
     public function testIsServiceExists()
@@ -310,7 +300,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
     }
 
     /**
-     * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
     public function testIsCalendarExists()
@@ -322,7 +311,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
     }
 
     /**
-     * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
     public function testGetGoogleEventById()
@@ -339,7 +327,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
     }
 
     /**
-     * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
     public function testGetMeetingByEventId()
@@ -432,7 +419,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
     }
 
     /**
-     * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
     public function testSetGService()
@@ -444,7 +430,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
     }
 
     /**
-     * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
     public function testPushEvent()
@@ -465,7 +450,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
     }
 
     /**
-     * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
     public function testReturnExtendedProperties()
@@ -536,7 +520,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
     }
 
     /**
-     * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
     public function testPullEvent()
@@ -557,7 +540,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
     }
 
     /**
-     * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
     public function testDelMeeting()
@@ -578,7 +560,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
     }
 
     /**
-     * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
     public function testDelEvent()
@@ -604,7 +585,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
     }
 
     /**
-     * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
     public function testClearPopups()
@@ -616,7 +596,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
     }
 
     /**
-     * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
     public function testUpdateSuitecrmMeetingEvent()
@@ -625,7 +604,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
     }
 
     /**
-     * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
     public function testCreateSuitecrmMeetingEvent()
@@ -714,7 +692,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
     }
 
     /**
-     * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
     public function testCreateGoogleCalendarEvent()
@@ -766,7 +743,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
     }
 
     /**
-     * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
     public function testSetTimezone()
@@ -788,7 +764,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
     }
 
     /**
-     * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
     public function testSetLastSync()
@@ -811,7 +786,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
     // GoogleSync.php
 
     /**
-     * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
     public function testGetTitle()
@@ -842,7 +816,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
     }
 
     /**
-     * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
     public function testDoAction()
@@ -904,7 +877,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
     }
 
     /**
-     * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
     public function testDoSync()
@@ -919,7 +891,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
     }
 
     /**
-     * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
     public function testAddUser()
@@ -939,7 +910,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
     }
 
     /**
-     * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
     public function testPushPullSkip()
@@ -1030,7 +1000,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
     }
 
     /**
-     * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
     public function testSetSyncUsers()
@@ -1074,7 +1043,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
     }
 
     /**
-     * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
     public function testSyncAllUsers()
@@ -1088,7 +1056,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
     //GoogleSyncHelper.php
 
     /**
-     * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
     public function testSingleEventAction()
@@ -1101,7 +1068,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
     }
 
     /**
-     * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
     public function testGetTimeStrings()
@@ -1138,7 +1104,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
     }
 
     /**
-     * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
     public function testGetNewestMeetingResponse()
@@ -1147,7 +1112,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
     }
 
     /**
-     * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
     public function testCreateSuitecrmReminders()
@@ -1158,7 +1122,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
     // GoogleSyncExceptions.php
 
     /**
-     * @runInSeparateProcess
      * @preserveGlobalState disabled
      */
     public function testCustomExceptions()
