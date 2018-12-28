@@ -35,9 +35,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
 
     // GoogleSyncBase.php
 
-    /**
-     * @preserveGlobalState disabled
-     */
     public function test__construct()
     {
 
@@ -78,9 +75,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
         $this->assertEquals($expectedLogLevel, $actualLogLevel);
     }
 
-    /**
-     * @preserveGlobalState disabled
-     */
     public function testGetAuthJson()
     {
         $state = new \SuiteCrm\StateSaver();
@@ -107,9 +101,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
 
     }
 
-    /**
-     * @preserveGlobalState disabled
-     */
     public function testSetClient()
     {
         $method = self::$reflection->getMethod('setClient');
@@ -132,9 +123,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
         $this->assertEquals(3, $e->getCode());
     }
 
-    /**
-     * @preserveGlobalState disabled
-     */
     public function testGetGoogleClient()
     {
         $method = self::$reflection->getMethod('getGoogleClient');
@@ -146,9 +134,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
         $this->assertEquals('invalid json token', $e->getMessage());
     }
 
-    /**
-     * @preserveGlobalState disabled
-     */
     public function testInitUserService()
     {
         $method = self::$reflection->getMethod('initUserService');
@@ -160,9 +145,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
         $this->assertEquals(3, $e->getCode());
     }
 
-    /**
-     * @preserveGlobalState disabled
-     */
     public function testGetUserMeetings()
     {
         $state = new \SuiteCRM\StateSaver();
@@ -246,9 +228,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
         $this->assertTrue($caught);
     }
 
-    /**
-     * @preserveGlobalState disabled
-     */
     public function testSetUsersGoogleCalendar()
     {
         $method = self::$reflection->getMethod('setUsersGoogleCalendar');
@@ -257,9 +236,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
         $this->assertEquals(false, $method->invoke($object));
     }
 
-    /**
-     * @preserveGlobalState disabled
-     */
     public function testGetSuiteCRMCalendar()
     {
         $method = self::$reflection->getMethod('getSuiteCRMCalendar');
@@ -277,9 +253,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
         $this->assertContains('GoogleSyncBase::getSuiteCRMCalendar()', $e->getMessage());
     }
 
-    /**
-     * @preserveGlobalState disabled
-     */
     public function testGetUserGoogleEvents()
     {
         $method = self::$reflection->getMethod('getUserGoogleEvents');
@@ -288,9 +261,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
         $this->assertEquals(false, $method->invoke($object));
     }
 
-    /**
-     * @preserveGlobalState disabled
-     */
     public function testIsServiceExists()
     {
         $method = self::$reflection->getMethod('isServiceExists');
@@ -299,9 +269,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
         $this->assertEquals(false, $method->invoke($object));
     }
 
-    /**
-     * @preserveGlobalState disabled
-     */
     public function testIsCalendarExists()
     {
         $method = self::$reflection->getMethod('isCalendarExists');
@@ -310,9 +277,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
         $this->assertEquals(false, $method->invoke($object));
     }
 
-    /**
-     * @preserveGlobalState disabled
-     */
     public function testGetGoogleEventById()
     {
         $method = self::$reflection->getMethod('getGoogleEventById');
@@ -326,9 +290,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
         $this->assertEquals('event ID is empty', $e->getMessage());
     }
 
-    /**
-     * @preserveGlobalState disabled
-     */
     public function testGetMeetingByEventId()
     {
         $state = new \SuiteCRM\StateSaver();
@@ -418,9 +379,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
         $this->assertEquals(null, $ret4);
     }
 
-    /**
-     * @preserveGlobalState disabled
-     */
     public function testSetGService()
     {
         $method = self::$reflection->getMethod('setGService');
@@ -429,9 +387,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
         $this->assertEquals(false, $method->invoke($object));
     }
 
-    /**
-     * @preserveGlobalState disabled
-     */
     public function testPushEvent()
     {
         $method = self::$reflection->getMethod('pushEvent');
@@ -449,9 +404,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
         $this->assertContains('GoogleSyncBase::pushEvent()', $e->getMessage());
     }
 
-    /**
-     * @preserveGlobalState disabled
-     */
     public function testReturnExtendedProperties()
     {
         $method = self::$reflection->getMethod('returnExtendedProperties');
@@ -519,9 +471,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
         $this->assertEquals('VALID', $returnPrivate['remain_unchanged']);
     }
 
-    /**
-     * @preserveGlobalState disabled
-     */
     public function testPullEvent()
     {
         $method = self::$reflection->getMethod('pullEvent');
@@ -539,9 +488,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
         $this->assertContains('GoogleSyncBase::pullEvent()', $e->getMessage());
     }
 
-    /**
-     * @preserveGlobalState disabled
-     */
     public function testDelMeeting()
     {
         $method = self::$reflection->getMethod('delMeeting');
@@ -559,9 +505,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
         $this->assertContains('GoogleSyncBase::delMeeting()', $e->getMessage());
     }
 
-    /**
-     * @preserveGlobalState disabled
-     */
     public function testDelEvent()
     {
         $method = self::$reflection->getMethod('delEvent');
@@ -584,9 +527,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
         $this->assertEquals(false, $method->invoke($object, $Google_Event, '1234567890'));
     }
 
-    /**
-     * @preserveGlobalState disabled
-     */
     public function testClearPopups()
     {
         $method = self::$reflection->getMethod('clearPopups');
@@ -595,17 +535,11 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
         $this->assertEquals(false, $method->invoke($object, null));
     }
 
-    /**
-     * @preserveGlobalState disabled
-     */
     public function testUpdateSuitecrmMeetingEvent()
     {
        // This is tested by testCreateSuitecrmMeetingEvent, Since that method calls it.
     }
 
-    /**
-     * @preserveGlobalState disabled
-     */
     public function testCreateSuitecrmMeetingEvent()
     {
         $state = new \SuiteCRM\StateSaver();
@@ -691,9 +625,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
         // This is covered by testCreateGoogleCalendarEvent since is calls this
     }
 
-    /**
-     * @preserveGlobalState disabled
-     */
     public function testCreateGoogleCalendarEvent()
     {
         $method = self::$reflection->getMethod('createGoogleCalendarEvent');
@@ -742,9 +673,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
         $this->assertEquals('Meeting', $private['suitecrm_type']);
     }
 
-    /**
-     * @preserveGlobalState disabled
-     */
     public function testSetTimezone()
     {
         $method = self::$reflection->getMethod('setTimezone');
@@ -763,9 +691,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
         $this->assertEquals($expectedTimezone, date_default_timezone_get());
     }
 
-    /**
-     * @preserveGlobalState disabled
-     */
     public function testSetLastSync()
     {
         $method = self::$reflection->getMethod('setLastSync');
@@ -785,9 +710,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
 
     // GoogleSync.php
 
-    /**
-     * @preserveGlobalState disabled
-     */
     public function testGetTitle()
     {
         $method = self::$reflection->getMethod('getTitle');
@@ -815,9 +737,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
         $this->assertEquals('UNNAMED RECORD', $method->invoke($object, null, null));
     }
 
-    /**
-     * @preserveGlobalState disabled
-     */
     public function testDoAction()
     {
         $method = self::$reflection->getMethod('doAction');
@@ -876,9 +795,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
 
     }
 
-    /**
-     * @preserveGlobalState disabled
-     */
     public function testDoSync()
     {
         $method = self::$reflection->getMethod('doSync');
@@ -890,9 +806,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
         $this->assertEquals(3, $e->getCode());
     }
 
-    /**
-     * @preserveGlobalState disabled
-     */
     public function testAddUser()
     {
         $method = self::$reflection->getMethod('addUser');
@@ -909,9 +822,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
 
     }
 
-    /**
-     * @preserveGlobalState disabled
-     */
     public function testPushPullSkip()
     {
         $method = self::$reflection->getMethod('pushPullSkip');
@@ -999,12 +909,9 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
 
     }
 
-    /**
-     * @preserveGlobalState disabled
-     */
     public function testSetSyncUsers()
     {
-        $this->markTestIncomplete('SKIP THIS TEST');
+        //$this->markTestIncomplete('SKIP THIS TEST');
         $state = new \SuiteCRM\StateSaver();
         $state->pushTable('users');
         $state->pushTable('user_preferences');
@@ -1043,9 +950,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
         $this->assertGreaterThanOrEqual(2, $countOfSyncUsers);
     }
 
-    /**
-     * @preserveGlobalState disabled
-     */
     public function testSyncAllUsers()
     {
         $object = new GoogleSync();
@@ -1056,9 +960,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
 
     //GoogleSyncHelper.php
 
-    /**
-     * @preserveGlobalState disabled
-     */
     public function testSingleEventAction()
     {
         $helper = new GoogleSyncHelper;
@@ -1068,9 +969,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
         // The rest of this method is tested by testPushPullSkip
     }
 
-    /**
-     * @preserveGlobalState disabled
-     */
     public function testGetTimeStrings()
     {
         $helper = new GoogleSyncHelper;
@@ -1104,17 +1002,11 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
         $this->assertEquals('1514808000', $ret['lastSync']);
     }
 
-    /**
-     * @preserveGlobalState disabled
-     */
     public function testGetNewestMeetingResponse()
     {
         $this->markTestIncomplete('TODO: Implement Tests');
     }
 
-    /**
-     * @preserveGlobalState disabled
-     */
     public function testCreateSuitecrmReminders()
     {
         $this->markTestIncomplete('TODO: Implement Tests');
@@ -1122,9 +1014,6 @@ class GoogleSyncTest extends StateCheckerPHPUnitTestCaseAbstract
 
     // GoogleSyncExceptions.php
 
-    /**
-     * @preserveGlobalState disabled
-     */
     public function testCustomExceptions()
     {
         $object = new GoogleSync();
