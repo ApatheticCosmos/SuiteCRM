@@ -1,14 +1,11 @@
 <?php
-if (!defined('sugarEntry') || !sugarEntry) {
-    die('Not A Valid Entry Point');
-}
-/**
- *
+if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +16,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,54 +34,52 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 require_once('modules/DynamicFields/templates/Fields/TemplateField.php');
-class TemplateText extends TemplateField
-{
-    public $type='varchar';
-    public $supports_unified_search = true;
+class TemplateText extends TemplateField{
+	var $type='varchar';
+    var $supports_unified_search = true;
 
-    public function __construct()
-    {
+    function __construct(){
         parent::__construct();
     }
 
-    public function get_xtpl_edit()
-    {
-        $name = $this->name;
-        $returnXTPL = array();
+	function get_xtpl_edit(){
+		$name = $this->name;
+		$returnXTPL = array();
 
-        if (!empty($this->help)) {
-            $returnXTPL[strtoupper($this->name . '_help')] = translate($this->help, $this->bean->module_dir);
-        }
+		if(!empty($this->help)){
+		    $returnXTPL[strtoupper($this->name . '_help')] = translate($this->help, $this->bean->module_dir);
+		}
 
-        if (isset($this->bean->$name)) {
-            $returnXTPL[$this->name] = $this->bean->$name;
-        } else {
-            if (empty($this->bean->id)) {
-                $returnXTPL[$this->name] =  $this->default_value;
-            }
-        }
-        return $returnXTPL;
-    }
-    public function get_xtpl_search()
-    {
-        if (!empty($_REQUEST[$this->name])) {
-            return $_REQUEST[$this->name];
-        }
-    }
+		if(isset($this->bean->$name)){
+		    $returnXTPL[$this->name] = $this->bean->$name;
+		}else{
+			if(empty($this->bean->id)){
+				 $returnXTPL[$this->name] =  $this->default_value;
+			}
+		}
+		return $returnXTPL;
+	}
+	function get_xtpl_search(){
+		if(!empty($_REQUEST[$this->name])){
+			return $_REQUEST[$this->name];
+		}
+	}
 
 
 
-    public function get_xtpl_detail()
-    {
-        $name = $this->name;
-        if (isset($this->bean->$name)) {
-            return $this->bean->$name;
-        }
-        return '';
-    }
+	function get_xtpl_detail(){
+		$name = $this->name;
+		if(isset($this->bean->$name)){
+			return $this->bean->$name;
+		}
+		return '';
+
+	}
+
+
 }

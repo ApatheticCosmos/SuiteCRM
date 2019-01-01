@@ -39,7 +39,7 @@ class ModulesCest
      */
     public function _before(AcceptanceTester $I)
     {
-        if (!$this->fakeData) {
+        if(!$this->fakeData) {
             $this->fakeData = Faker\Factory::create();
             $this->fakeDataSeed = rand(0, 2048);
         }
@@ -48,14 +48,14 @@ class ModulesCest
 
     /**
      * Get list of modules
-     * @param ApiTester $I
+     * @param apiTester $I
      * @see http://jsonapi.org/format/1.0/#crud-creating
      *
      * HTTP Verb: GET
      * URL: /api/v8/modules
      *
      */
-    public function TestScenarioListModules(ApiTester $I)
+    public function TestScenarioListModules(apiTester $I)
     {
         $I->comment('Test list modules');
         $I->sendJsonApiContentNegotiation();
@@ -77,7 +77,7 @@ class ModulesCest
 
     /**
      * Create a new entry with missing type
-     * @param ApiTester $I
+     * @param apiTester $I
      * @see http://jsonapi.org/format/1.0/#crud-creating
      *
      * HTTP Verb: POST
@@ -85,7 +85,7 @@ class ModulesCest
      * URL: /api/v8/modules/{module_name}/{id}
      *
      */
-    public function TestScenarioCreateWithMissingType(ApiTester $I)
+    public function TestScenarioCreateWithMissingType(apiTester $I)
     {
         $I->comment('Test missing type');
         $I->sendJsonApiContentNegotiation();
@@ -107,7 +107,7 @@ class ModulesCest
 
     /**
      * Create a new entry with missing attributes
-     * @param ApiTester $I
+     * @param apiTester $I
      * @see http://jsonapi.org/format/1.0/#crud-creating
      *
      * HTTP Verb: POST
@@ -115,7 +115,7 @@ class ModulesCest
      * URL: /api/v8/modules/{module_name}/{id}
      *
      */
-    public function TestScenarioCreateWithMissingAttributes(ApiTester $I)
+    public function TestScenarioCreateWithMissingAttributes(apiTester $I)
     {
         $I->comment('Test required attributes');
         $I->sendJsonApiContentNegotiation();
@@ -139,7 +139,7 @@ class ModulesCest
 
     /**
      * Create a new entry with required fields
-     * @param ApiTester $I
+     * @param apiTester $I
      * @see http://jsonapi.org/format/1.0/#crud-creating
      *
      * HTTP Verb: POST
@@ -147,7 +147,7 @@ class ModulesCest
      * URL: /api/v8/modules/{module_name}/{id}
      *
      */
-    public function TestScenarioCreateWithMissingRequiredFields(ApiTester $I)
+    public function TestScenarioCreateWithMissingRequiredFields(apiTester $I)
     {
         $I->comment('Test required attributes');
         $I->sendJsonApiContentNegotiation();
@@ -171,7 +171,7 @@ class ModulesCest
 
     /**
      * Create a new entry
-     * @param ApiTester $I
+     * @param apiTester $I
      * @see http://jsonapi.org/format/1.0/#crud-creating
      *
      * HTTP Verb: POST
@@ -179,7 +179,7 @@ class ModulesCest
      * URL: /api/v8/modules/{module_name}/{id}
      *
      */
-    public function TestScenarioCreateNew(ApiTester $I)
+    public function TestScenarioCreateNew(apiTester $I)
     {
         $faker = \Faker\Factory::create();
         $I->comment('Test create account');
@@ -216,7 +216,7 @@ class ModulesCest
 
     /**
      * Create a new entry
-     * @param ApiTester $I
+     * @param apiTester $I
      * @see http://jsonapi.org/format/1.0/#crud-creating
      *
      * HTTP Verb: POST
@@ -224,7 +224,7 @@ class ModulesCest
      * URL: /api/v8/modules/{module_name}/{id}
      * @throws \Codeception\Exception\ModuleException
      */
-    public function TestScenarioCreateNewWithClientCredentialsGrant(ApiTester $I)
+    public function TestScenarioCreateNewWithClientCredentialsGrant(apiTester $I)
     {
         $faker = \Faker\Factory::create();
         $I->comment('Test create account');
@@ -263,7 +263,7 @@ class ModulesCest
 
      /**
       * Create a existing entry
-      * @param ApiTester $I
+      * @param apiTester $I
       * @see http://jsonapi.org/format/1.0/#crud-creating
       *
       * HTTP Verb: POST
@@ -271,7 +271,7 @@ class ModulesCest
       * URL: /api/v8/modules/{module_name}/{id}
       *
       */
-    public function TestScenarioCreateExisting(ApiTester $I)
+    public function TestScenarioCreateExisting(apiTester $I)
     {
         $faker = \Faker\Factory::create();
 
@@ -302,7 +302,7 @@ class ModulesCest
 
     /**
      * Create a notes resource and attaches file
-     * @param ApiTester $I
+     * @param apiTester $I
      * @see http://jsonapi.org/format/1.0/#crud-creating
      *
      * HTTP Verb: POST
@@ -313,7 +313,7 @@ class ModulesCest
      * @see \SuiteCRM\API\JsonApi\v1\Resource\SuiteBeanResource
      * @see SugarFieldFile::save()
      */
-    public function TestScenarioCreateNoteWithAttachment(ApiTester $I)
+    public function TestScenarioCreateNoteWithAttachment(apiTester $I)
     {
         $faker = \Faker\Factory::create();
 
@@ -322,7 +322,7 @@ class ModulesCest
         $filenameBinaryFile = 'testFile.png';
         $pathToBinaryFile = codecept_data_dir() . $filenameBinaryFile;
         $binaryFile = file_get_contents($pathToBinaryFile);
-        $binaryFileEncoded = '<OMITTED>';
+        $binaryFileEncoded = base64_encode($binaryFile);
 
         $I->loginAsAdmin();
         $I->sendJwtAuthorisation();
@@ -382,12 +382,12 @@ class ModulesCest
         $I->assertNotEmpty('filename', $response['data']['attributes']['filename']);
         $I->assertNotEmpty('filename_file', $response['data']['attributes']['filename_file']);
         $I->assertEquals($filenameBinaryFile, $response['data']['attributes']['filename']);
-        $I->assertEquals($binaryFileEncoded, '<OMITTED>');
+        $I->assertEquals($binaryFileEncoded, $response['data']['attributes']['filename_file']);
     }
 
     /**
      * Create a document resource and attaches a file
-     * @param ApiTester $I
+     * @param apiTester $I
      * @see http://jsonapi.org/format/1.0/#crud-creating
      *
      * HTTP Verb: POST
@@ -398,7 +398,7 @@ class ModulesCest
      * @see \SuiteCRM\API\JsonApi\v1\Resource\SuiteBeanResource
      * @see SugarFieldFile::save()
      */
-    public function TestScenarioCreateDocumentWithAttachment(ApiTester $I)
+    public function TestScenarioCreateDocumentWithAttachment(apiTester $I)
     {
         $faker = \Faker\Factory::create();
 
@@ -407,7 +407,7 @@ class ModulesCest
         $filenameBinaryFile = 'testFile.png';
         $pathToBinaryFile = codecept_data_dir().'/'.$filenameBinaryFile;
         $binaryFile = file_get_contents($pathToBinaryFile);
-        $binaryFileEncoded = '<OMITTED>';
+        $binaryFileEncoded = base64_encode($binaryFile);
 
         $I->loginAsAdmin();
         $I->sendJwtAuthorisation();
@@ -479,14 +479,14 @@ class ModulesCest
 
     /**
      * Retrieves an entry
-     * @param ApiTester $I
+     * @param apiTester $I
      * @see http://jsonapi.org/format/1.0/#fetching
      *
      * HTTP Verb: GET
      * URL: /api/v8/modules/{module_name}/{id}
      *
      */
-    public function TestScenarioRetrieveEntry(ApiTester $I)
+    public function TestScenarioRetrieveEntry(apiTester $I)
     {
         $I->loginAsAdmin();
         $I->sendJwtAuthorisation();
@@ -505,14 +505,14 @@ class ModulesCest
 
     /**
      * Update entry
-     * @param ApiTester $I
+     * @param apiTester $I
      * @see http://jsonapi.org/format/1.0/#crud-updating
      *
      * HTTP Verb: POST (update and replace) / PATCH (update and modify)
      * URL: /api/v8/modules/{module_name}/{id}
      *
      */
-    public function TestScenarioUpdateEntry(ApiTester $I)
+    public function TestScenarioUpdateEntry(apiTester $I)
     {
         $faker = \Faker\Factory::create();
 
@@ -550,14 +550,14 @@ class ModulesCest
 
     /**
      * Update entry
-     * @param ApiTester $I
+     * @param apiTester $I
      * @see http://jsonapi.org/format/1.0/#crud-deleting
      *
      * HTTP Verb: DELETE
      * URL: /api/v8/modules/{module_name}/{id}
      *
      */
-    public function TestScenarioDeleteEntry(ApiTester $I)
+    public function TestScenarioDeleteEntry(apiTester $I)
     {
         $I->loginAsAdmin();
         $I->sendJwtAuthorisation();
@@ -570,13 +570,13 @@ class ModulesCest
 
     /**
      * Retrieves a list of entries
-     * @param ApiTester $I
+     * @param apiTester $I
      * @see http://jsonapi.org/format/1.0/#fetching
      *
      * HTTP Verb: GET
      * URL: /api/v8/modules/{module_name}
      */
-    public function TestScenarioRetrieveList(ApiTester $I)
+    public function TestScenarioRetrieveList(apiTester $I)
     {
         // Send Request
         $I->loginAsAdmin();
@@ -593,7 +593,7 @@ class ModulesCest
         $I->assertArrayHasKey('data', $response);
         $I->assertTrue(is_array($response['data']));
 
-        if (!empty($response['data'])) {
+        if(!empty($response['data'])) {
             $I->assertTrue(isset($response['data']['0']));
             $I->assertTrue(isset($response['data']['0']['id']));
             $I->assertTrue(isset($response['data']['0']['type']));
@@ -608,13 +608,13 @@ class ModulesCest
 
     /**
      * Retrieves a list of entries
-     * @param ApiTester $I
+     * @param apiTester $I
      * @see http://jsonapi.org/format/1.0/#fetching
      *
      * HTTP Verb: GET
      * URL: /api/v8/modules/{module_name}
      */
-    public function TestScenarioRetrieveFilteredList(ApiTester $I)
+    public function TestScenarioRetrieveFilteredList(apiTester $I)
     {
         // Send Request
         $I->loginAsAdmin();
@@ -634,7 +634,7 @@ class ModulesCest
         $I->assertArrayHasKey('data', $response);
         $I->assertTrue(is_array($response['data']));
 
-        if (!empty($response['data'])) {
+        if(!empty($response['data'])) {
             $I->assertTrue(isset($response['data']['0']));
             $I->assertTrue(isset($response['data']['0']['id']));
             $I->assertTrue(isset($response['data']['0']['type']));
@@ -649,13 +649,13 @@ class ModulesCest
 
     /**
      * Create product and create a relationship with product categories (One To Many)
-     * @param ApiTester $I
+     * @param apiTester $I
      * @see http://jsonapi.org/format/1.0/#fetching-resources-responses
      *
      * HTTP Verb: POST
      * URL: /api/v8/modules/{module_name}
      */
-    public function TestScenarioCreateProductWithAnOneToManyRelationship(ApiTester $I)
+    public function TestScenarioCreateProductWithAnOneToManyRelationship (apiTester $I)
     {
         $I->loginAsAdmin();
         $I->sendJwtAuthorisation();
@@ -664,7 +664,7 @@ class ModulesCest
         $this->fakeData->seed(rand(0, 2148));
         // Create AOS_Product_Categories
         $payloadProductCategory = json_encode(
-            array(
+            array (
                 'data' => array(
                     'id' => '',
                     'type' =>  self::$PRODUCT_CATEGORY_RECORD_TYPE,
@@ -687,7 +687,7 @@ class ModulesCest
         $this->fakeData->seed(rand(0, 2148));
         // Create AOS_Products and Relate to AOS_Product_Categories
         $payload = json_encode(
-            array(
+            array (
                 'data' => array(
                     'id' => '',
                     'type' => self::$PRODUCT_RECORD_TYPE,
@@ -720,13 +720,13 @@ class ModulesCest
 
     /**
      * Use product to retrieve a relationship (One To Many)
-     * @param ApiTester $I
+     * @param apiTester $I
      * @see http://jsonapi.org/format/1.0/#crud-creating
      *
      * HTTP Verb: GET
      * URL: /api/v8/modules/{module_name}/relationships/{link}
      */
-    public function TestScenarioRetrieveOneToManyRelationship(ApiTester $I)
+    public function TestScenarioRetrieveOneToManyRelationship (apiTester $I)
     {
         // Retrieve Product
         // Retrieve relationship
@@ -755,13 +755,13 @@ class ModulesCest
 
     /**
      * Use product to create a new relationship with product categories (One To Many)
-     * @param ApiTester $I
+     * @param apiTester $I
      * @see http://jsonapi.org/format/1.0/#fetching-resources-responses
      *
      * HTTP Verb: POST
      * URL: /api/v8/modules/{module_name}/relationships/{link}
      */
-    public function TestScenarioCreateAnOneToManyRelationship(ApiTester $I)
+    public function TestScenarioCreateAnOneToManyRelationship (apiTester $I)
     {
         $I->loginAsAdmin();
         $I->sendJwtAuthorisation();
@@ -769,7 +769,7 @@ class ModulesCest
         // Create AOS_Product_Categories
         $this->fakeData->seed(rand(0, 2148));
         $payloadProductCategory = json_encode(
-            array(
+            array (
                 'data' => array(
                     'id' => '',
                     'type' =>  self::$PRODUCT_CATEGORY_RECORD_TYPE,
@@ -791,7 +791,7 @@ class ModulesCest
 
         // Create AOS_Products and Relate to AOS_Product_Categories
         $payload = json_encode(
-            array(
+            array (
                 'data' => array(
                     'id' => self::$PRODUCT_CATEGORY_RECORD_ID,
                     'type' => self::$PRODUCT_CATEGORY_RECORD_TYPE,
@@ -831,13 +831,13 @@ class ModulesCest
 
     /**
      * Update a relationship (One To Many)
-     * @param ApiTester $I
+     * @param apiTester $I
      * @see http://jsonapi.org/format/#crud-updating-relationships
      *
      * HTTP Verb: PATCH
      * URL: /api/v8/modules/{module_name}/relationships/{link}
      */
-    public function TestScenarioUpdateOneToManyRelationship(ApiTester $I)
+    public function TestScenarioUpdateOneToManyRelationship (apiTester $I)
     {
         $I->loginAsAdmin();
         $I->sendJwtAuthorisation();
@@ -845,7 +845,7 @@ class ModulesCest
         $this->fakeData->seed(rand(0, 2148));
         // Create AOS_Product_Categories
         $payloadProductCategory = json_encode(
-            array(
+            array (
                 'data' => array(
                     'id' => '',
                     'type' =>  self::$PRODUCT_CATEGORY_RECORD_TYPE,
@@ -867,7 +867,7 @@ class ModulesCest
 
         // Create AOS_Products and Relate to AOS_Product_Categories
         $payload = json_encode(
-            array(
+            array (
                 'data' => array(
                     'id' => self::$PRODUCT_CATEGORY_RECORD_ID,
                     'type' => self::$PRODUCT_CATEGORY_RECORD_TYPE,
@@ -907,20 +907,20 @@ class ModulesCest
 
     /**
      * Update a relationship (One To Many)
-     * @param ApiTester $I
+     * @param apiTester $I
      * @see http://jsonapi.org/format/#crud-updating-relationships
      *
      * HTTP Verb: PATCH
      * URL: /api/v8/modules/{module_name}/relationships/{link}
      */
-    public function TestScenarioClearOneToManyRelationshipUsingRelationshipLink(ApiTester $I)
+    public function TestScenarioClearOneToManyRelationshipUsingRelationshipLink (apiTester $I)
     {
         $I->loginAsAdmin();
         $I->sendJwtAuthorisation();
         $I->sendJsonApiContentNegotiation();
         // Clear AOS_Product_Categories relationship
         $payload = json_encode(
-            array(
+            array (
                 'data' => array()
             )
         );
@@ -951,21 +951,22 @@ class ModulesCest
 
     /**
      * Delete a relationship (One To Many)
-     * @param ApiTester $I
+     * @param apiTester $I
      * @see http://jsonapi.org/format/1.0/#crud-deleting
      *
      * HTTP Verb: DELETE
      * URL: /api/v8/modules/{module_name}/relationships/{link}
      */
-    public function TestScenarioDeleteOneToManyRelationship(ApiTester $I)
+    public function TestScenarioDeleteOneToManyRelationship (apiTester $I)
     {
+
         $I->loginAsAdmin();
         $I->sendJwtAuthorisation();
         $I->sendJsonApiContentNegotiation();
         $this->fakeData->seed(rand(0, 2148));
         // Create AOS_Product_Categories
         $payloadProductCategory = json_encode(
-            array(
+            array (
                 'data' => array(
                     'id' => '',
                     'type' =>  self::$PRODUCT_CATEGORY_RECORD_TYPE,
@@ -987,7 +988,7 @@ class ModulesCest
 
         // Create AOS_Products and Relate to AOS_Product_Categories
         $payload = json_encode(
-            array(
+            array (
                 'data' => array(
                     'id' => self::$PRODUCT_CATEGORY_RECORD_ID,
                     'type' => self::$PRODUCT_CATEGORY_RECORD_TYPE,
@@ -1026,13 +1027,13 @@ class ModulesCest
 
     /**
      * Retrieve a relationship (Many To Many)
-     * @param ApiTester $I
+     * @param apiTester $I
      * @see http://jsonapi.org/format/#fetching-relationships
      *
      * HTTP Verb: GET
      * URL: /api/v8/modules/{module_name}/relationships/{link}
      */
-    public function TestScenarioCreateManyToManyRelationships(ApiTester $I)
+    public function TestScenarioCreateManyToManyRelationships (apiTester $I)
     {
         $I->loginAsAdmin();
         $I->sendJwtAuthorisation();
@@ -1042,7 +1043,7 @@ class ModulesCest
         // Create AOS_Product #1
         $this->fakeData->seed(rand(0, 2148));
         $payloadProduct1 = json_encode(
-            array(
+            array (
                 'data' => array(
                     'id' => '',
                     'type' =>  self::$PRODUCT_RECORD_TYPE,
@@ -1067,7 +1068,7 @@ class ModulesCest
         // Create AOS_Product #2
         $this->fakeData->seed(rand(0, 2148));
         $payloadProduct2 = json_encode(
-            array(
+            array (
                 'data' => array(
                     'id' => '',
                     'type' =>  self::$PRODUCT_RECORD_TYPE,
@@ -1093,7 +1094,7 @@ class ModulesCest
         // Create AOS_Product_Categories Parent
         $this->fakeData->seed(rand(0, 2148));
         $payloadProduct = json_encode(
-            array(
+            array (
                 'data' => array(
                     'id' => '',
                     'type' =>  self::$PRODUCT_CATEGORY_RECORD_TYPE,
@@ -1116,7 +1117,7 @@ class ModulesCest
 
         // Relate to Parent AOS_Product_Categories with child AOS_Product_Categories
         $payload = json_encode(
-            array(
+            array (
                 'data' => array(
                     array(
                         'id' => self::$PRODUCT_CATEGORY_RELATED_RECORD_IDS[0],
@@ -1144,17 +1145,18 @@ class ModulesCest
         $I->seeResponseCodeIs(200);
         $I->assertArrayHasKey('data', $responseParentCategory);
         $I->assertNotEmpty($responseParentCategory['data']);
+
     }
 
     /**
      * Retrieve a relationship (Many To Many)
-     * @param ApiTester $I
+     * @param apiTester $I
      * @see http://jsonapi.org/format/#fetching-relationships
      *
      * HTTP Verb: GET
      * URL: /api/v8/modules/{module_name}/relationships/{link}
      */
-    public function TestScenarioRetrieveManyToManyRelationships(ApiTester $I)
+    public function TestScenarioRetrieveManyToManyRelationships (apiTester $I)
     {
         $I->loginAsAdmin();
         $I->sendJwtAuthorisation();
@@ -1185,13 +1187,13 @@ class ModulesCest
 
     /**
      * Replaces a relationship
-     * @param ApiTester $I
+     * @param apiTester $I
      * @see http://jsonapi.org/format/1.0/#crud-updating-relationships
      *
      * HTTP Verb: PATCH
      * URL: /api/v8/modules/{module_name}/relationships/{link}
      */
-    public function TestScenarioUpdateManyToManyRelationships(ApiTester $I)
+    public function TestScenarioUpdateManyToManyRelationships (apiTester $I)
     {
         $I->loginAsAdmin();
         $I->sendJwtAuthorisation();
@@ -1199,7 +1201,7 @@ class ModulesCest
         // Replace the relationships with just one of the related items
         // We should only see the the item we have posted in the responses
         $payload = json_encode(
-            array(
+            array (
                 'data' => array(
                     array(
                         'id' => self::$PRODUCT_CATEGORY_RELATED_RECORD_IDS[1],
@@ -1245,13 +1247,13 @@ class ModulesCest
 
     /**
      * Clears all related items
-     * @param ApiTester $I
+     * @param apiTester $I
      * @see http://jsonapi.org/format/1.0/#crud-updating-relationships
      *
      * HTTP Verb: PATCH
      * URL: /api/v8/modules/{module_name}/relationships/{link}
      */
-    public function TestScenarioClearManyToManyRelationships(ApiTester $I)
+    public function TestScenarioClearManyToManyRelationships (apiTester $I)
     {
         // PATCH {"data": []} to clear all relationships
 
@@ -1262,7 +1264,7 @@ class ModulesCest
         // Replace the relationships with just one of the related items
         // We should only see the the item we have posted in the responses
         $payload = json_encode(
-            array(
+            array (
                 'data' => array()
             )
         );
@@ -1295,13 +1297,13 @@ class ModulesCest
 
     /**
      * Removes a relationship
-     * @param ApiTester $I
+     * @param apiTester $I
      * @see http://jsonapi.org/format/1.0/#crud-updating-relationships
      *
      * HTTP Verb: DELETE
      * URL: /api/v8/modules/{module_name}/relationships/{link}
      */
-    public function TestScenarioDeleteManyToManyRelationships(ApiTester $I)
+    public function TestScenarioDeleteManyToManyRelationships (apiTester $I)
     {
         // DELETE single resource
         $I->loginAsAdmin();
@@ -1312,7 +1314,7 @@ class ModulesCest
         // Create AOS_Product #1
         $this->fakeData->seed(rand(0, 2148));
         $payloadProduct1 = json_encode(
-            array(
+            array (
                 'data' => array(
                     'id' => '',
                     'type' =>  self::$PRODUCT_RECORD_TYPE,
@@ -1337,7 +1339,7 @@ class ModulesCest
         // Create AOS_Product #2
         $this->fakeData->seed(rand(0, 2148));
         $payloadProduct2 = json_encode(
-            array(
+            array (
                 'data' => array(
                     'id' => '',
                     'type' =>  self::$PRODUCT_RECORD_TYPE,
@@ -1363,7 +1365,7 @@ class ModulesCest
         // Create AOS_Product_Categories Parent
         $this->fakeData->seed(rand(0, 2148));
         $payloadProduct = json_encode(
-            array(
+            array (
                 'data' => array(
                     'id' => '',
                     'type' =>  self::$PRODUCT_CATEGORY_RECORD_TYPE,
@@ -1386,7 +1388,7 @@ class ModulesCest
 
         // Relate to Parent AOS_Product_Categories with child AOS_Product_Categories
         $payload = json_encode(
-            array(
+            array (
                 'data' => array(
                     array(
                         'id' => self::$PRODUCT_CATEGORY_RELATED_RECORD_IDS[0],
@@ -1417,7 +1419,7 @@ class ModulesCest
 
         // Delete first product
         $payloadDelete = json_encode(
-            array(
+            array (
                 'data' => array(
                     array(
                         'id' => self::$PRODUCT_CATEGORY_RELATED_RECORD_IDS[0],
@@ -1455,163 +1457,236 @@ class ModulesCest
     }
 
 
-    public function TestScenarioCreateMeetingsWithUsersAndMiddleTableFields(ApiTester $I)
+    public function TestScenarioCreateMeetingsWithUsersAndMiddleTableFields(apiTester $I)
     {
-        // Temporary removing this. The API seems does not save correctly the relations on meetings but other problem blocking to solve this
-//
-//        $I->loginAsAdmin();
-//        $I->sendJwtAuthorisation();
-//        $I->sendJsonApiContentNegotiation();
-//
-//        $url = $I->getInstanceURL() . self::$MEETINGS_RESOURCE;
-//
-//        $I->comment('Create a meeting with invitees');
-//        $meetingDateStart = new DateTimeImmutable();
-//        $meetingDateStart = $meetingDateStart->add(new DateInterval('PT1H'));
-//        $meetingDateEnd = $meetingDateStart->add(new DateInterval('PT15M'));
-//
-//        $meetingsPayload = array(
-//            'data' => array(
-//                'id'=> '',
-//                'type' => 'Meetings',
-//                'attributes' => array(
-//                    'name' => 'RelationshipsTest',
-//                    'date_start' => $meetingDateStart->format(DATE_ATOM),
-//                    'date_end' => $meetingDateEnd->format(DATE_ATOM),
-//                    'duration_hours' => 0,
-//                    'duration_minutes' => 15,
-//                    'assigned_user_id' => '1',
-//                    'assigned_user_name' => 'Administrator'
-//                ),
-//                'relationships' => array(
-//                    'users' => array(
-//                        'data' => array(
-//                            array(
-//                                'id' => '1',
-//                                'type' => 'Users',
-//                                'meta' => array(
-//                                    'middle_table' => array(
-//                                        'data' => array(
-//                                            'id' => '',
-//                                            'type' => 'Link',
-//                                            'attributes' => array(
-//                                                'user_id' => '1',
-//                                                'accept_status' => 'accept'
-//                                            )
-//                                        )
-//                                    )
-//                                )
-//                            ),
-//                            array(
-//                                'id' => 'seed_max_id',
-//                                'type' => 'Users',
-//                                'meta' => array(
-//                                    'middle_table' => array(
-//                                        'data' => array(
-//                                            'id' => '',
-//                                            'type' => 'Link',
-//                                            'attributes' => array(
-//                                                'user_id' => 'seed_max_id',
-//                                                'accept_status' => 'none'
-//                                            )
-//                                        )
-//                                    )
-//                                )
-//                            ),
-//                            array(
-//                                'id' => 'seed_chris_id',
-//                                'type' => 'Users',
-//                                'meta' => array(
-//                                    'middle_table' => array(
-//                                        'data' => array(
-//                                            'id' => '',
-//                                            'type' => 'Link',
-//                                            'attributes' => array(
-//                                                'user_id' => 'seed_chris_id',
-//                                                'accept_status' => 'none'
-//                                            )
-//                                        )
-//                                    )
-//                                )
-//                            )
-//                        )
-//                    )
-//                )
-//            )
-//        );
-//
-//        $I->sendPOST($url, json_encode($meetingsPayload));
-//        $I->seeResponseCodeIs(201);
-//        $responseMeeting = json_decode($I->grabResponse(), true);
-//        self::$MEETINGS_RECORD_ID = $responseMeeting['data']['id'];
-//
-//        $I->comment('Verify Invitees and Verify middle table fields');
-//        $url = $I->getInstanceURL() . self::$MEETINGS_RESOURCE . '/' .
-//            self::$MEETINGS_RECORD_ID . '/relationships/users';
-//        $I->sendGET($url);
-//        $responseMeetingUsers = json_decode($I->grabResponse(), true);
-//
-//        $I->assertTrue(isset($responseMeetingUsers['data'][0]['links']['href']));
-//        $I->assertTrue(isset($responseMeetingUsers['data'][0]['meta']['middle_table']['data']['attributes']['id']));
-//        $I->assertTrue(isset($responseMeetingUsers['data'][0]['meta']['middle_table']['data']['attributes']['meeting_id']));
-//        $I->assertTrue(isset($responseMeetingUsers['data'][0]['meta']['middle_table']['data']['attributes']['required']));
-//        $I->assertTrue(isset($responseMeetingUsers['data'][0]['meta']['middle_table']['data']['attributes']['date_modified']));
-//        $I->assertTrue(isset($responseMeetingUsers['data'][0]['meta']['middle_table']['data']['attributes']['deleted']));
-//
-//
-//        unset($responseMeetingUsers['data'][0]['links']);
-//        unset($responseMeetingUsers['data'][0]['meta']['middle_table']['data']['attributes']['id']);
-//        unset($responseMeetingUsers['data'][0]['meta']['middle_table']['data']['attributes']['meeting_id']);
-//        unset($responseMeetingUsers['data'][0]['meta']['middle_table']['data']['attributes']['required']);
-//        unset($responseMeetingUsers['data'][0]['meta']['middle_table']['data']['attributes']['date_modified']);
-//        unset($responseMeetingUsers['data'][0]['meta']['middle_table']['data']['attributes']['deleted']);
-//
-//        unset($responseMeetingUsers['data'][1]['links']);
-//        unset($responseMeetingUsers['data'][1]['meta']['middle_table']['data']['attributes']['id']);
-//        unset($responseMeetingUsers['data'][1]['meta']['middle_table']['data']['attributes']['meeting_id']);
-//        unset($responseMeetingUsers['data'][1]['meta']['middle_table']['data']['attributes']['required']);
-//        unset($responseMeetingUsers['data'][1]['meta']['middle_table']['data']['attributes']['date_modified']);
-//        unset($responseMeetingUsers['data'][1]['meta']['middle_table']['data']['attributes']['deleted']);
-//
-//        unset($responseMeetingUsers['data'][2]['links']);
-//        unset($responseMeetingUsers['data'][2]['meta']['middle_table']['data']['attributes']['id']);
-//        unset($responseMeetingUsers['data'][2]['meta']['middle_table']['data']['attributes']['meeting_id']);
-//        unset($responseMeetingUsers['data'][2]['meta']['middle_table']['data']['attributes']['required']);
-//        unset($responseMeetingUsers['data'][2]['meta']['middle_table']['data']['attributes']['date_modified']);
-//        unset($responseMeetingUsers['data'][2]['meta']['middle_table']['data']['attributes']['deleted']);
-//
-//        $I->assertSame($meetingsPayload['data']['relationships']['users']['data'], $responseMeetingUsers['data']);
-//
-//        $I->comment('Update a chris accept_status using POST');
-//        $url = $I->getInstanceURL() . self::$MEETINGS_RESOURCE . '/' .
-//            self::$MEETINGS_RECORD_ID . '/relationships/users';
-//        $payloadUpdateChrisAccept = array(
-//            'data' =>  array(
-//                'id' => 'seed_chris_id',
-//                'type' => 'Users',
-//                'meta' => array(
-//                    'middle_table' => array(
-//                        'data' => array(
-//                            'id' => '',
-//                            'type' => 'Link',
-//                            'attributes' => array(
-//                                'user_id' => 'seed_chris_id',
-//                                'accept_status' => 'accept'
-//                            )
-//                        )
-//                    )
-//                )
-//            )
-//        );
-//
-//        $I->sendPOST($url, json_encode($payloadUpdateChrisAccept));
-//        $I->seeResponseIsJson();
-//        $responseChrisAccept = json_decode($I->grabResponse(), true);
-//        $I->seeResponseCodeIs(200);
-//
-//        $exp = $payloadUpdateChrisAccept['data'];
-//
-//        $I->comment('Verify that user accept_status has been update');
-//        $I->assertSame($exp, $responseChrisAccept['data'][0]);
+        $I->loginAsAdmin();
+        $I->sendJwtAuthorisation();
+        $I->sendJsonApiContentNegotiation();
+
+        $url = $I->getInstanceURL() . self::$MEETINGS_RESOURCE;
+
+        $I->comment('Create a meeting with invitees');
+        $meetingDateStart = new DateTimeImmutable();
+        $meetingDateStart = $meetingDateStart->add(new DateInterval('PT1H'));
+        $meetingDateEnd = $meetingDateStart->add(new DateInterval('PT15M'));
+
+        $meetingsPayload = array(
+            'data' => array(
+                'id'=> '',
+                'type' => 'Meetings',
+                'attributes' => array(
+                    'name' => 'RelationshipsTest',
+                    'date_start' => $meetingDateStart->format(DATE_ATOM),
+                    'date_end' => $meetingDateEnd->format(DATE_ATOM),
+                    'duration_hours' => 0,
+                    'duration_minutes' => 15,
+                    'assigned_user_id' => '1',
+                    'assigned_user_name' => 'Administrator'
+                ),
+                'relationships' => array(
+                    'users' => array(
+                        'data' => array(
+                            array(
+                                'id' => '1',
+                                'type' => 'User',
+                                'meta' => array(
+                                    'middle_table' => array(
+                                        'data' => array(
+                                            'id' => '',
+                                            'type' => 'Link',
+                                            'attributes' => array(
+                                                'user_id' => '1',
+                                                'accept_status' => 'accept'
+                                            )
+                                        )
+                                    )
+                                )
+                            ),
+                            array(
+                                'id' => 'seed_max_id',
+                                'type' => 'Users',
+                                'meta' => array(
+                                    'middle_table' => array(
+                                        'data' => array(
+                                            'id' => '',
+                                            'type' => 'Link',
+                                            'attributes' => array(
+                                                'user_id' => 'seed_max_id',
+                                                'accept_status' => 'none'
+                                            )
+                                        )
+                                    )
+                                )
+                            ),
+                            array(
+                                'id' => 'seed_chris_id',
+                                'type' => 'Users',
+                                'meta' => array(
+                                    'middle_table' => array(
+                                        'data' => array(
+                                            'id' => '',
+                                            'type' => 'Link',
+                                            'attributes' => array(
+                                                'user_id' => 'seed_chris_id',
+                                                'accept_status' => 'none'
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                        )
+                    )
+                )
+            )
+        );
+
+        $I->sendPOST($url, json_encode($meetingsPayload));
+        $I->seeResponseCodeIs(201);
+        $responseMeeting = json_decode($I->grabResponse(), true);
+        self::$MEETINGS_RECORD_ID = $responseMeeting['data']['id'];
+
+        $I->comment('Verify Invitees and Verify middle table fields');
+        $url = $I->getInstanceURL() . self::$MEETINGS_RESOURCE . '/' .
+            self::$MEETINGS_RECORD_ID . '/relationships/users';
+        $I->sendGET($url);
+        $responseMeetingUsers = json_decode($I->grabResponse(), true);
+        $I->assertNotEmpty($responseMeetingUsers);
+        $I->assertArrayHasKey('data', $responseMeetingUsers);
+        $I->assertNotEmpty($responseMeetingUsers['data']);
+
+        $I->comment('Verify Admin user');
+        $I->assertArrayHasKey('0', $responseMeetingUsers['data']);
+        $I->assertNotEmpty($responseMeetingUsers['data'][0]);
+        $I->assertArrayHasKey('id', $responseMeetingUsers['data'][0]);
+        $I->assertEquals('1', $responseMeetingUsers['data'][0]['id']);
+        $I->assertArrayHasKey('type', $responseMeetingUsers['data'][0]);
+        $I->assertEquals('Users', $responseMeetingUsers['data'][0]['type']);
+        $I->assertArrayHasKey('meta', $responseMeetingUsers['data'][0]);
+        $I->assertArrayHasKey('middle_table', $responseMeetingUsers['data'][0]['meta']);
+        $I->assertArrayHasKey('data', $responseMeetingUsers['data'][0]['meta']['middle_table']);
+        $I->assertArrayHasKey('attributes', $responseMeetingUsers['data'][0]['meta']['middle_table']['data']);
+        $I->assertArrayHasKey('accept_status', $responseMeetingUsers['data'][0]['meta']['middle_table']['data']['attributes']);
+        $I->assertEquals('accept', $responseMeetingUsers['data'][0]['meta']['middle_table']['data']['attributes']['accept_status']);
+        $I->assertArrayHasKey('user_id', $responseMeetingUsers['data'][0]['meta']['middle_table']['data']['attributes']);
+        $I->assertEquals('1', $responseMeetingUsers['data'][0]['meta']['middle_table']['data']['attributes']['user_id']);
+
+        $I->comment('Verify Max user');
+        $I->assertArrayHasKey('1', $responseMeetingUsers['data']);
+        $I->assertNotEmpty($responseMeetingUsers['data'][1]);
+        $I->assertArrayHasKey('id', $responseMeetingUsers['data'][1]);
+        $I->assertEquals('seed_max_id', $responseMeetingUsers['data'][1]['id']);
+        $I->assertArrayHasKey('type', $responseMeetingUsers['data'][1]);
+        $I->assertEquals('Users', $responseMeetingUsers['data'][1]['type']);
+        $I->assertArrayHasKey('meta', $responseMeetingUsers['data'][1]);
+        $I->assertArrayHasKey('middle_table', $responseMeetingUsers['data'][1]['meta']);
+        $I->assertArrayHasKey('data', $responseMeetingUsers['data'][1]['meta']['middle_table']);
+        $I->assertArrayHasKey('attributes', $responseMeetingUsers['data'][1]['meta']['middle_table']['data']);
+        $I->assertArrayHasKey('accept_status', $responseMeetingUsers['data'][1]['meta']['middle_table']['data']['attributes']);
+        $I->assertEquals('none', $responseMeetingUsers['data'][1]['meta']['middle_table']['data']['attributes']['accept_status']);
+        $I->assertArrayHasKey('user_id', $responseMeetingUsers['data'][1]['meta']['middle_table']['data']['attributes']);
+        $I->assertEquals('seed_max_id', $responseMeetingUsers['data'][1]['meta']['middle_table']['data']['attributes']['user_id']);
+
+        $I->comment('Verify Chris user');
+        $I->assertArrayHasKey('2', $responseMeetingUsers['data']);
+        $I->assertNotEmpty($responseMeetingUsers['data'][2]);
+        $I->assertArrayHasKey('id', $responseMeetingUsers['data'][2]);
+        $I->assertEquals('seed_chris_id', $responseMeetingUsers['data'][2]['id']);
+        $I->assertArrayHasKey('type', $responseMeetingUsers['data'][2]);
+        $I->assertEquals('Users', $responseMeetingUsers['data'][2]['type']);
+        $I->assertArrayHasKey('meta', $responseMeetingUsers['data'][2]);
+        $I->assertArrayHasKey('middle_table', $responseMeetingUsers['data'][2]['meta']);
+        $I->assertArrayHasKey('data', $responseMeetingUsers['data'][2]['meta']['middle_table']);
+        $I->assertArrayHasKey('attributes', $responseMeetingUsers['data'][2]['meta']['middle_table']['data']);
+        $I->assertArrayHasKey('accept_status', $responseMeetingUsers['data'][2]['meta']['middle_table']['data']['attributes']);
+        $I->assertEquals('none', $responseMeetingUsers['data'][2]['meta']['middle_table']['data']['attributes']['accept_status']);
+        $I->assertArrayHasKey('user_id', $responseMeetingUsers['data'][2]['meta']['middle_table']['data']['attributes']);
+        $I->assertEquals('seed_chris_id', $responseMeetingUsers['data'][2]['meta']['middle_table']['data']['attributes']['user_id']);
+
+        $I->comment('Update a chris accept_status using POST');
+        $url = $I->getInstanceURL() . self::$MEETINGS_RESOURCE . '/' .
+            self::$MEETINGS_RECORD_ID . '/relationships/users';
+        $payloadUpdateChrisAccept = array(
+            'data' =>  array(
+                'id' => 'seed_chris_id',
+                'type' => 'Users',
+                'meta' => array(
+                    'middle_table' => array(
+                        'data' => array(
+                            'id' => '',
+                            'type' => 'Link',
+                            'attributes' => array(
+                                'user_id' => 'seed_chris_id',
+                                'accept_status' => 'accept'
+                            )
+                        )
+                    )
+                )
+            )
+        );
+
+        $I->sendPOST($url, json_encode($payloadUpdateChrisAccept));
+        $I->seeResponseIsJson();
+        $responseChrisAccept = json_decode($I->grabResponse(), true);
+        $I->seeResponseCodeIs(200);
+
+        $I->comment('Verify that user accept_status has been update');
+        $I->assertArrayHasKey('0', $responseChrisAccept['data']);
+        $I->assertNotEmpty($responseChrisAccept['data'][0]);
+        $I->assertArrayHasKey('id', $responseChrisAccept['data'][0]);
+        $I->assertEquals('seed_chris_id', $responseChrisAccept['data'][0]['id']);
+        $I->assertArrayHasKey('type', $responseChrisAccept['data'][0]);
+        $I->assertEquals('Users', $responseChrisAccept['data'][0]['type']);
+        $I->assertArrayHasKey('meta', $responseChrisAccept['data'][0]);
+        $I->assertArrayHasKey('middle_table', $responseChrisAccept['data'][0]['meta']);
+        $I->assertArrayHasKey('data', $responseChrisAccept['data'][0]['meta']['middle_table']);
+        $I->assertArrayHasKey('attributes', $responseChrisAccept['data'][0]['meta']['middle_table']['data']);
+        $I->assertArrayHasKey('accept_status', $responseChrisAccept['data'][0]['meta']['middle_table']['data']['attributes']);
+        $I->assertEquals('accept', $responseChrisAccept['data'][0]['meta']['middle_table']['data']['attributes']['accept_status']);
+        $I->assertArrayHasKey('user_id', $responseChrisAccept['data'][0]['meta']['middle_table']['data']['attributes']);
+        $I->assertEquals('seed_chris_id', $responseChrisAccept['data'][0]['meta']['middle_table']['data']['attributes']['user_id']);
+
+
+        $I->comment('Update a chris accept_status and remove other relationships using PATCH');
+        $url = $I->getInstanceURL() . self::$MEETINGS_RESOURCE . '/' .
+            self::$MEETINGS_RECORD_ID . '/relationships/users';
+        $payloadUpdateChrisDecline = array(
+            'data' =>  array(
+                'id' => 'seed_chris_id',
+                'type' => 'Users',
+                'meta' => array(
+                    'middle_table' => array(
+                        'data' => array(
+                            'id' => '',
+                            'type' => 'Link',
+                            'attributes' => array(
+                                'user_id' => 'seed_chris_id',
+                                'accept_status' => 'accept'
+                            )
+                        )
+                    )
+                )
+            )
+        );
+
+        $I->sendPATCH($url, json_encode($payloadUpdateChrisDecline));
+        $I->seeResponseIsJson();
+        $responseChrisDecline = json_decode($I->grabResponse(), true);
+        $I->seeResponseCodeIs(200);
+
+        $I->comment('Verify that user accept_status has been update');
+        $I->assertArrayHasKey('0', $responseChrisDecline['data']);
+        $I->assertNotEmpty($responseChrisDecline['data'][0]);
+        $I->assertArrayHasKey('id', $responseChrisDecline['data'][0]);
+        $I->assertEquals('seed_chris_id', $responseChrisDecline['data'][0]['id']);
+        $I->assertArrayHasKey('type', $responseChrisDecline['data'][0]);
+        $I->assertEquals('Users', $responseChrisDecline['data'][0]['type']);
+        $I->assertArrayHasKey('meta', $responseChrisDecline['data'][0]);
+        $I->assertArrayHasKey('middle_table', $responseChrisDecline['data'][0]['meta']);
+        $I->assertArrayHasKey('data', $responseChrisDecline['data'][0]['meta']['middle_table']);
+        $I->assertArrayHasKey('attributes', $responseChrisDecline['data'][0]['meta']['middle_table']['data']);
+        $I->assertArrayHasKey('accept_status', $responseChrisDecline['data'][0]['meta']['middle_table']['data']['attributes']);
+        $I->assertEquals('accept', $responseChrisDecline['data'][0]['meta']['middle_table']['data']['attributes']['accept_status']);
+        $I->assertArrayHasKey('user_id', $responseChrisDecline['data'][0]['meta']['middle_table']['data']['attributes']);
+        $I->assertEquals('seed_chris_id', $responseChrisDecline['data'][0]['meta']['middle_table']['data']['attributes']['user_id']);
     }
 }

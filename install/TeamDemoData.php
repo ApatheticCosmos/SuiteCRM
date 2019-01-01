@@ -1,14 +1,11 @@
 <?php
-if (!defined('sugarEntry') || !sugarEntry) {
-    die('Not A Valid Entry Point');
-}
-/**
- *
+if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +16,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,173 +34,176 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 
 
 
-class TeamDemoData
-{
-    public $_team;
-    public $_large_scale_test;
+class TeamDemoData {
+	var $_team;
+	var $_large_scale_test;
 
-    public $guids = array(
-        'jim'	=> 'seed_jim_id',
-        'sarah'	=> 'seed_sarah_id',
-        'sally'	=> 'seed_sally_id',
-        'max'	=> 'seed_max_id',
-        'will'	=> 'seed_will_id',
-        'chris'	=> 'seed_chris_id',
-    /*
-     * Pending fix of demo data mechanism
-        'jim'	=> 'jim00000-0000-0000-0000-000000000000',
-        'sarah'	=> 'sarah000-0000-0000-0000-000000000000',
-        'sally'	=> 'sally000-0000-0000-0000-000000000000',
-        'max'	=> 'max00000-0000-0000-0000-000000000000',
-        'will'	=> 'will0000-0000-0000-0000-000000000000',
-        'chris'	=> 'chris000-0000-0000-0000-000000000000',
-    */
-    );
+	var $guids = array(
+		'jim'	=> 'seed_jim_id',
+		'sarah'	=> 'seed_sarah_id',
+		'sally'	=> 'seed_sally_id',
+		'max'	=> 'seed_max_id',
+		'will'	=> 'seed_will_id',
+		'chris'	=> 'seed_chris_id',
+	/*
+	 * Pending fix of demo data mechanism
+		'jim'	=> 'jim00000-0000-0000-0000-000000000000',
+		'sarah'	=> 'sarah000-0000-0000-0000-000000000000',
+		'sally'	=> 'sally000-0000-0000-0000-000000000000',
+		'max'	=> 'max00000-0000-0000-0000-000000000000',
+		'will'	=> 'will0000-0000-0000-0000-000000000000',
+		'chris'	=> 'chris000-0000-0000-0000-000000000000',
+	*/
+	);
 
-    /**
-     * Constructor for creating demo data for teams
-     */
-    public function __construct($seed_team, $large_scale_test = false)
-    {
-        $this->_team = $seed_team;
-        $this->_large_scale_test = $large_scale_test;
-    }
+	/**
+	 * Constructor for creating demo data for teams
+	 */
+	function __construct($seed_team, $large_scale_test = false)
+	{
+		$this->_team = $seed_team;
+		$this->_large_scale_test = $large_scale_test;
+	}
 
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    public function TeamDemoData($seed_team, $large_scale_test = false)
-    {
+    function TeamDemoData($seed_team, $large_scale_test = false){
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
+        if(isset($GLOBALS['log'])) {
             $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
+        }
+        else {
             trigger_error($deprecatedMessage, E_USER_DEPRECATED);
         }
         self::__construct($seed_team, $large_scale_test);
     }
 
 
-    /**
-     *
-     */
-    public function create_demo_data()
-    {
-        global $current_language;
-        global $sugar_demodata;
-        foreach ($sugar_demodata['teams'] as $v) {
-            if (!$this->_team->retrieve($v['team_id'])) {
-                $this->_team->create_team($v['name'], $v['description'], $v['team_id']);
-            }
-        }
+	/**
+	 *
+	 */
+	function create_demo_data() {
+		global $current_language;
+		global $sugar_demodata;
+		foreach($sugar_demodata['teams'] as $v)
+		{
+			if (!$this->_team->retrieve($v['team_id']))
+			$this->_team->create_team($v['name'], $v['description'], $v['team_id']);
+		}
 
-        if ($this->_large_scale_test) {
-            $team_list = $this->_seed_data_get_team_list();
-            foreach ($team_list as $team_name) {
-                $this->_quick_create($team_name);
-            }
-        }
+		if($this->_large_scale_test)
+		{
+			$team_list = $this->_seed_data_get_team_list();
+			foreach($team_list as $team_name)
+			{
+				$this->_quick_create($team_name);
+			}
+		}
 
-        $this->add_users_to_team();
-    }
+		$this->add_users_to_team();
+	}
 
-    public function add_users_to_team()
-    {
-        // Create the west team memberships
-        $this->_team->retrieve("West");
-        $this->_team->add_user_to_team($this->guids['sarah']);
-        $this->_team->add_user_to_team($this->guids['sally']);
-        $this->_team->add_user_to_team($this->guids["max"]);
+	function add_users_to_team() {
+		// Create the west team memberships
+		$this->_team->retrieve("West");
+		$this->_team->add_user_to_team($this->guids['sarah']);
+		$this->_team->add_user_to_team($this->guids['sally']);
+		$this->_team->add_user_to_team($this->guids["max"]);
 
-        // Create the east team memberships
-        $this->_team->retrieve("East");
-        $this->_team->add_user_to_team($this->guids["will"]);
-        $this->_team->add_user_to_team($this->guids['chris']);
-    }
+		// Create the east team memberships
+		$this->_team->retrieve("East");
+		$this->_team->add_user_to_team($this->guids["will"]);
+		$this->_team->add_user_to_team($this->guids['chris']);
+	}
 
-    /**
-     *
-     */
-    public function get_random_team()
-    {
-        $team_list = $this->_seed_data_get_team_list();
-        $team_list_size = count($team_list);
-        $random_index = mt_rand(0, $team_list_size-1);
+	/**
+	 *
+	 */
+	function get_random_team()
+	{
+		$team_list = $this->_seed_data_get_team_list();
+		$team_list_size = count($team_list);
+		$random_index = mt_rand(0,$team_list_size-1);
 
-        return $team_list[$random_index];
-    }
+		return $team_list[$random_index];
+	}
 
-    /**
-     *
-     */
-    public function get_random_teamset()
-    {
-        $team_list = $this->_seed_data_get_teamset_list();
-        $team_list_size = count($team_list);
-        $random_index = mt_rand(0, $team_list_size-1);
+	/**
+	 *
+	 */
+	function get_random_teamset()
+	{
+		$team_list = $this->_seed_data_get_teamset_list();
+		$team_list_size = count($team_list);
+		$random_index = mt_rand(0,$team_list_size-1);
 
-        return $team_list[$random_index];
-    }
-
-
-    /**
-     *
-     */
-    public function _seed_data_get_teamset_list()
-    {
-        $teamsets = array();
-        $teamsets[] = array("East", "West");
-        $teamsets[] = array("East", "West", "1");
-        $teamsets[] = array("West", "East");
-        $teamsets[] = array("West", "East", "1");
-        $teamsets[] = array("1", "East");
-        $teamsets[] = array("1", "West");
-        return $teamsets;
-    }
+		return $team_list[$random_index];
+	}
 
 
-    /**
-     *
-     */
-    public function _seed_data_get_team_list()
-    {
-        $teams = array();
-        //bug 28138 todo
-        $teams[] = "north";
-        $teams[] = "south";
-        $teams[] = "left";
-        $teams[] = "right";
-        $teams[] = "in";
-        $teams[] = "out";
-        $teams[] = "fly";
-        $teams[] = "walk";
-        $teams[] = "crawl";
-        $teams[] = "pivot";
-        $teams[] = "money";
-        $teams[] = "dinero";
-        $teams[] = "shadow";
-        $teams[] = "roof";
-        $teams[] = "sales";
-        $teams[] = "pillow";
-        $teams[] = "feather";
+	/**
+	 *
+	 */
+	function _seed_data_get_teamset_list()
+	{
+		$teamsets = Array();
+		$teamsets[] = array("East", "West");
+		$teamsets[] = array("East", "West", "1");
+		$teamsets[] = array("West", "East");
+		$teamsets[] = array("West", "East", "1");
+		$teamsets[] = array("1", "East");
+		$teamsets[] = array("1", "West");
+		return $teamsets;
+	}
 
-        return $teams;
-    }
 
-    /**
-     *
-     */
-    public function _quick_create($name)
-    {
-        if (!$this->_team->retrieve($name)) {
-            $this->_team->create_team($name, $name, $name);
-        }
-    }
+	/**
+	 *
+	 */
+	function _seed_data_get_team_list()
+	{
+		$teams = Array();
+//bug 28138 todo
+		$teams[] = "north";
+		$teams[] = "south";
+		$teams[] = "left";
+		$teams[] = "right";
+		$teams[] = "in";
+		$teams[] = "out";
+		$teams[] = "fly";
+		$teams[] = "walk";
+		$teams[] = "crawl";
+		$teams[] = "pivot";
+		$teams[] = "money";
+		$teams[] = "dinero";
+		$teams[] = "shadow";
+		$teams[] = "roof";
+		$teams[] = "sales";
+		$teams[] = "pillow";
+		$teams[] = "feather";
+
+		return $teams;
+	}
+
+	/**
+	 *
+	 */
+	function _quick_create($name)
+	{
+		if (!$this->_team->retrieve($name))
+		{
+			$this->_team->create_team($name, $name, $name);
+		}
+	}
+
+
 }
+

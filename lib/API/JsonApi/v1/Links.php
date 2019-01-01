@@ -104,6 +104,14 @@ class Links implements LoggerAwareInterface, JsonApiResponseInterface
     private $logger;
 
     /**
+     * Links constructor.
+     */
+    public function __construct()
+    {
+
+    }
+
+    /**
      * @return Links
      */
     public static function get()
@@ -120,10 +128,10 @@ class Links implements LoggerAwareInterface, JsonApiResponseInterface
         if ($this->validateUrl($url)) {
             $this->self = $url;
         } else {
-            $this->getLogger()->error(LinksMessage::INVALID_URL_PARAMETER);
+            $this->logger->error(LinksMessage::INVALID_URL_PARAMETER);
         }
 
-        return clone $this;
+       return clone $this;
     }
 
     /**
@@ -134,7 +142,7 @@ class Links implements LoggerAwareInterface, JsonApiResponseInterface
     {
         $this->hasPagination = true;
 
-        return clone $this;
+       return clone $this;
     }
 
 
@@ -148,10 +156,10 @@ class Links implements LoggerAwareInterface, JsonApiResponseInterface
         if ($this->validateUrl($url)) {
             $this->first = $url;
         } else {
-            $this->getLogger()->error(LinksMessage::INVALID_URL_PARAMETER);
+            $this->logger->error(LinksMessage::INVALID_URL_PARAMETER);
         }
 
-        return clone $this;
+       return clone $this;
     }
 
     /**
@@ -164,10 +172,10 @@ class Links implements LoggerAwareInterface, JsonApiResponseInterface
         if ($this->validateUrl($url)) {
             $this->prev = $url;
         } else {
-            $this->getLogger()->error(LinksMessage::INVALID_URL_PARAMETER);
+            $this->logger->error(LinksMessage::INVALID_URL_PARAMETER);
         }
 
-        return clone $this;
+       return clone $this;
     }
 
     /**
@@ -180,10 +188,10 @@ class Links implements LoggerAwareInterface, JsonApiResponseInterface
         if ($this->validateUrl($url)) {
             $this->next = $url;
         } else {
-            $this->getLogger()->error(LinksMessage::INVALID_URL_PARAMETER);
+            $this->logger->error(LinksMessage::INVALID_URL_PARAMETER);
         }
 
-        return clone $this;
+       return clone $this;
     }
 
     /**
@@ -196,10 +204,10 @@ class Links implements LoggerAwareInterface, JsonApiResponseInterface
         if ($this->validateUrl($url)) {
             $this->last = $url;
         } else {
-            $this->getLogger()->error(LinksMessage::INVALID_URL_PARAMETER);
+            $this->logger->error(LinksMessage::INVALID_URL_PARAMETER);
         }
 
-        return clone $this;
+       return clone $this;
     }
 
     /**
@@ -214,7 +222,7 @@ class Links implements LoggerAwareInterface, JsonApiResponseInterface
             $this->meta = array_merge($this->meta, $meta);
         }
 
-        return clone $this;
+       return clone $this;
     }
 
 
@@ -226,7 +234,7 @@ class Links implements LoggerAwareInterface, JsonApiResponseInterface
     {
         $this->href = $url;
 
-        return clone $this;
+       return clone $this;
     }
 
     /**
@@ -237,7 +245,7 @@ class Links implements LoggerAwareInterface, JsonApiResponseInterface
     {
         $this->related = $related;
 
-        return clone $this;
+       return clone $this;
     }
 
     /**
@@ -259,19 +267,19 @@ class Links implements LoggerAwareInterface, JsonApiResponseInterface
         }
 
         if ($this->hasPagination()) {
-            if ($this->first !== null) {
+            if($this->first !== null) {
                 $response['first'] = $this->first;
             }
 
-            if ($this->prev !== null) {
+            if($this->prev !== null) {
                 $response['prev'] = $this->prev;
             }
 
-            if ($this->next !== null) {
+            if($this->next !== null) {
                 $response['next'] = $this->next;
             }
 
-            if ($this->last !== null) {
+            if($this->last !== null) {
                 $response['last'] = $this->last;
             }
         }
@@ -347,16 +355,5 @@ class Links implements LoggerAwareInterface, JsonApiResponseInterface
     public function setLogger(LoggerInterface $logger)
     {
         $this->logger = $logger;
-    }
-    
-    
-    /**
-     * @return LoggerInterface
-     */
-    public function getLogger() {
-        if (!$this->logger) {
-            $this->setLogger(new Logger());
-        }
-        return $this->logger;
     }
 }

@@ -1,6 +1,6 @@
 <?php
+
 /**
- *
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
@@ -16,7 +16,7 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -34,8 +34,8 @@
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
  */
 class Favorites extends Basic
 {
@@ -76,8 +76,9 @@ class Favorites extends Basic
             $favorite_record->save();
 
             return true;
+        } else {
+            return false;
         }
-        return false;
     }
 
     /**
@@ -89,14 +90,8 @@ class Favorites extends Basic
     {
         global $current_user;
         $db = DBManagerFactory::getInstance();
-
-        $recordIdQuote = $db->quote($record_id);
-        $moduleQuote = $db->quote($module);
-        $currentUserIdQuote = $db->quote($current_user->id);
-
-        $query = "SELECT id FROM favorites WHERE parent_id= '" . $recordIdQuote .
-                "' AND parent_type = '" . $moduleQuote . "' AND assigned_user_id = '" .
-                $currentUserIdQuote . "' AND deleted = 0 ORDER BY date_entered DESC";
+        
+        $query = "SELECT id FROM favorites WHERE parent_id= '" . $record_id . "' AND parent_type = '" . $module . "' AND assigned_user_id = '" . $current_user->id . "' AND deleted = 0 ORDER BY date_entered DESC";
 
         return $db->getOne($query);
     }
@@ -112,15 +107,10 @@ class Favorites extends Basic
 
         $return_array = array();
 
-        $currentUserIdQuote = $db->quote($current_user->id);
         if ($id) {
-            $idQuote = $db->quote($id);
-            $query = "SELECT parent_id, parent_type FROM favorites WHERE assigned_user_id = '" .
-                    $currentUserIdQuote . "' AND parent_id = '" . $idQuote .
-                    "' AND deleted = 0 ORDER BY date_entered DESC";
+            $query = "SELECT parent_id, parent_type FROM favorites WHERE assigned_user_id = '" . $current_user->id . "' AND parent_id = '" . $id . "' AND deleted = 0 ORDER BY date_entered DESC";
         } else {
-            $query = "SELECT parent_id, parent_type FROM favorites WHERE assigned_user_id = '" .
-                    $currentUserIdQuote . "' AND deleted = 0 ORDER BY date_entered DESC";
+            $query = "SELECT parent_id, parent_type FROM favorites WHERE assigned_user_id = '" . $current_user->id . "' AND deleted = 0 ORDER BY date_entered DESC";
         }
 
         $result = $db->query($query);
@@ -128,7 +118,7 @@ class Favorites extends Basic
         $i = 0;
         while ($row = $db->fetchByAssoc($result)) {
             $bean = BeanFactory::getBean($row['parent_type'], $row['parent_id']);
-            if ($bean) {
+            if($bean) {
                 $return_array[$i]['item_summary'] = $bean->name;
                 $return_array[$i]['item_summary_short'] = to_html(getTrackerSubstring($bean->name));
                 $return_array[$i]['id'] = $row['parent_id'];
@@ -144,6 +134,7 @@ class Favorites extends Basic
 
                 ++$i;
             }
+
         }
 
         return $return_array;
@@ -152,7 +143,7 @@ class Favorites extends Basic
     /**
      * @parm string $module
      * @return array Representing an array of \SuiteCRM\API\JsonApi\Resource\Resource
-     */
+     */ 
     public function getCurrentUserFavoritesForModule($module)
     {
         $db = DBManagerFactory::getInstance();
@@ -175,13 +166,11 @@ class Favorites extends Basic
 
         $response = array();
 
-        $currentUserIdQuote = $db->quote($current_user->id);
-        $moduleQuote = $db->quote($module);
         $dbResult = $db->query(
             "SELECT parent_id, parent_type FROM favorites " .
-            " WHERE assigned_user_id = '" . $currentUserIdQuote . "'" .
+            " WHERE assigned_user_id = '" . $current_user->id . "'" .
             " AND deleted = 0 " .
-            " AND parent_type = '" . $moduleQuote . "'" .
+            " AND parent_type = '" . $db->quote($module) . "'" .
             " ORDER BY date_entered DESC "
         );
 
@@ -202,11 +191,10 @@ class Favorites extends Basic
         return $response;
     }
 
-    public function save($notify = false)
-    {
+    public function save($notify = false) {
         global $current_user;
 
-        if (empty($this->assigned_user_id)) {
+        if(empty($this->assigned_user_id)) {
             $this->assigned_user_id = $current_user->id;
         }
         parent::save($notify);
@@ -220,7 +208,7 @@ class Favorites extends Basic
         switch ($interface) {
             case 'ACL':
                 return false;
-            default:
+            default :
                 return false;
         }
     }
