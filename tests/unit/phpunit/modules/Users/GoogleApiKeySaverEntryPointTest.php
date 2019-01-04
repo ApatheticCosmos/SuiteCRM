@@ -73,5 +73,17 @@ class GoogleApiKeySaverEntryPointTest extends StateCheckerPHPUnitTestCaseAbstrac
     </body>
 </html>', $exitString);
     }
+
+    public function testHandleRequestGetnew() {
+        $user = BeanFactory::getBean('Users');
+        $cfg['site_url'] = 'http://foo/bar.org';
+        $cfg['google_auth_json'] = base64_encode('{"web":{"client_id":"UNIT_TEST_client_id","project_id":"UNIT_TEST_project_id","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://www.googleapis.com/oauth2/v3/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_secret":"UNIT_TEST_client_secret","redirect_uris":["http://www.example.com/index.php?entryPoint=saveGoogleApiKey"]}}');
+        $client = new Google_Client();
+        $request['getnew'] = 'ERR_NOT_ADMIN';
+        $epMock = new GoogleApiKeySaverEntryPointMock($user, $cfg, $client, $request);
+        $expected = "https://accounts.google.com/o/oauth2/auth?response_type=code&access_type=offline&client_id=UNIT_TEST_client_id&redirect_uri=http%3A%2F%2Fwww.example.com%2Findex.php%3FentryPoint%3DsaveGoogleApiKey&state&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcalendar&approval_prompt=force";
+        $redirectString = $epMock->getRedirectUrl();
+        $this->assertEquals($expected, $redirectString);
+    }
     
 }
