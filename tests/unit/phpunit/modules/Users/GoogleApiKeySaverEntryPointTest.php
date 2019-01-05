@@ -85,5 +85,86 @@ class GoogleApiKeySaverEntryPointTest extends StateCheckerPHPUnitTestCaseAbstrac
         $redirectString = $epMock->getRedirectUrl();
         $this->assertEquals($expected, $redirectString);
     }
-    
+
+    public function testHandleRequestCode() {
+        $state = new StateSaver();
+        $state->pushGlobals();
+        $state->pushTable('users');
+        $state->pushTable('user_preferences');
+        $state->pushTable('tracker');
+
+        $user = BeanFactory::getBean('Users');
+        $user->last_name = 'UNIT_TESTS';
+        $user->user_name = 'UNIT_TESTS';
+        $user->save();
+
+        $cfg['site_url'] = 'http://foo/bar.org';
+        $cfg['google_auth_json'] = base64_encode('{"web":{"client_id":"UNIT_TEST_client_id","project_id":"UNIT_TEST_project_id","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://www.googleapis.com/oauth2/v3/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_secret":"UNIT_TEST_client_secret","redirect_uris":["http://www.example.com/index.php?entryPoint=saveGoogleApiKey"]}}');
+        $client = new Google_Client();
+        $request['code'] = '1234567890';
+        try {
+            $epMock = new GoogleApiKeySaverEntryPointMock($user, $cfg, $client, $request);
+            $this->assertTrue(false, "This should have thrown an exception");
+        } catch (Exception $e) {}
+        $this->assertEquals(10, $e->getCode());
+        
+        $state->popTable('tracker');
+        $state->popTable('user_preferences');
+        $state->popTable('users');
+        $state->popGlobals();
+    }
+
+    public function testHandleRequestSetInvalid() {
+        $state = new StateSaver();
+        $state->pushGlobals();
+        $state->pushTable('users');
+        $state->pushTable('user_preferences');
+        $state->pushTable('tracker');
+
+        $user = BeanFactory::getBean('Users');
+        $user->last_name = 'UNIT_TESTS';
+        $user->user_name = 'UNIT_TESTS';
+        $user->save();
+
+        $cfg['site_url'] = 'http://foo/bar.org';
+        $cfg['google_auth_json'] = base64_encode('{"web":{"client_id":"UNIT_TEST_client_id","project_id":"UNIT_TEST_project_id","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://www.googleapis.com/oauth2/v3/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_secret":"UNIT_TEST_client_secret","redirect_uris":["http://www.example.com/index.php?entryPoint=saveGoogleApiKey"]}}');
+        $client = new Google_Client();
+        $request['setinvalid'] = '';
+        $epMock = new GoogleApiKeySaverEntryPointMock($user, $cfg, $client, $request);
+        $expected = "http://foo/bar.org/index.php?module=Users&action=EditView&record=" . $user->id;
+        $redirectString = $epMock->getRedirectUrl();
+        $this->assertEquals($expected, $redirectString);
+        
+        $state->popTable('tracker');
+        $state->popTable('user_preferences');
+        $state->popTable('users');
+        $state->popGlobals();
+    }
+
+
+    public function testHandleRequestUnknown() {
+        $state = new StateSaver();
+        $state->pushGlobals();
+        $state->pushTable('users');
+        $state->pushTable('user_preferences');
+        $state->pushTable('tracker');
+
+        $user = BeanFactory::getBean('Users');
+        $user->last_name = 'UNIT_TESTS';
+        $user->user_name = 'UNIT_TESTS';
+        $user->save();
+        $cfg['site_url'] = 'http://foo/bar.org';
+        $cfg['google_auth_json'] = base64_encode('{"web":{"client_id":"UNIT_TEST_client_id","project_id":"UNIT_TEST_project_id","auth_uri":"https://accounts.google.com/o/oauth2/auth","token_uri":"https://www.googleapis.com/oauth2/v3/token","auth_provider_x509_cert_url":"https://www.googleapis.com/oauth2/v1/certs","client_secret":"UNIT_TEST_client_secret","redirect_uris":["http://www.example.com/index.php?entryPoint=saveGoogleApiKey"]}}');
+        $client = new Google_Client();
+        $request['INVALID'] = 'INVALID';
+        $epMock = new GoogleApiKeySaverEntryPointMock($user, $cfg, $client, $request);
+        $expected = "http://foo/bar.org/index.php?module=Users&action=EditView&record=" . $user->id;
+        $redirectString = $epMock->getRedirectUrl();
+        $this->assertEquals($expected, $redirectString);
+
+        $state->popTable('tracker');
+        $state->popTable('user_preferences');
+        $state->popTable('users');
+        $state->popGlobals();
+    }
 }
