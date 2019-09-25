@@ -24,7 +24,7 @@ class ModulesMetaCest
      */
     public function _before(AcceptanceTester $I)
     {
-        if (!$this->fakeData) {
+        if(!$this->fakeData) {
             $this->fakeData = Faker\Factory::create();
             $this->fakeDataSeed = rand(0, 2048);
         }
@@ -33,14 +33,14 @@ class ModulesMetaCest
 
     /**
      * Get list of modules
-     * @param ApiTester $I
+     * @param apiTester $I
      * @see http://jsonapi.org/format/1.0/#document-meta
      *
      * HTTP Verb: GET
      * URL: /api/v8/modules/meta/language
      *
      */
-    public function TestScenarioGetModuleMetaLanguages(ApiTester $I)
+    public function TestScenarioGetModuleMetaLanguages(apiTester $I)
     {
         $I->loginAsAdmin();
         $I->sendJwtAuthorisation();
@@ -64,14 +64,14 @@ class ModulesMetaCest
 
     /**
      * Get list of fields/attributes of a given module
-     * @param ApiTester $I
+     * @param apiTester $I
      * @see http://jsonapi.org/format/1.0/#document-meta
      *
      * HTTP Verb: GET
      * URL: /api/v8/modules/meta/attributes
      *
      */
-    public function TestScenarioGetModuleMetaAttributes(ApiTester $I)
+    public function TestScenarioGetModuleMetaAttributes(apiTester $I)
     {
         $I->loginAsAdmin();
         $I->sendJwtAuthorisation();
@@ -98,14 +98,14 @@ class ModulesMetaCest
 
     /**
      * Get menu metadata of a given module
-     * @param ApiTester $I
+     * @param apiTester $I
      * @see http://jsonapi.org/format/1.0/#document-meta
      *
      * HTTP Verb: GET
      * URL: /api/v8/modules/meta/menu
      *
      */
-    public function TestScenarioGetModuleMetaMenu(ApiTester $I)
+    public function TestScenarioGetModuleMetaMenu(apiTester $I)
     {
         $I->loginAsAdmin();
         $I->sendJwtAuthorisation();
@@ -140,14 +140,14 @@ class ModulesMetaCest
 
     /**
      * Get layout metadata of module view
-     * @param ApiTester $I
+     * @param apiTester $I
      * @see http://jsonapi.org/format/1.0/#document-meta
      *
      * HTTP Verb: GET
      * URL: /api/v8/modules/meta/view/{view}
      * @see \MBConstants for posible {view} values
      */
-    public function TestScenarioGetMetaLayout(ApiTester $I)
+    public function TestScenarioGetMetaLayout(apiTester $I)
     {
         $I->loginAsAdmin();
         $I->sendJwtAuthorisation();
@@ -169,15 +169,14 @@ class ModulesMetaCest
 
     /**
      * Get the current user's favorites for a single module
-     * @param \ApiTester $I
+     * @param \apiTester $I
      * @see http://jsonapi.org/format/1.0/#document-meta
      *
      * HTTP Verb: GET
      * URL: /api/v8/modules/{module}/favorites
      * @see global $moduleList for posible {module} values
      */
-    public function TestScenarioGetModuleFavorites(ApiTester $I)
-    {
+    public function TestScenarioGetModuleFavorites(apiTester $I) {
         $I->loginAsAdmin();
         $I->sendJwtAuthorisation();
         $I->sendJsonApiContentNegotiation();
@@ -250,7 +249,7 @@ class ModulesMetaCest
         $I->assertNotEmpty($decodedResponse);
         $I->assertArrayHasKey('data', $decodedResponse);
 
-        if (isset($decodedResponse['data'][0])) {
+        if(isset($decodedResponse['data'][0])) {
             // response has many results
             $I->assertArrayHasKey('type', $decodedResponse['data'][0]);
             $I->assertEquals('Accounts', $decodedResponse['data'][0]['type']);
@@ -264,15 +263,14 @@ class ModulesMetaCest
     }
     /**
      * Get the current user's favorite records for all modules
-     * @param \ApiTester $I
+     * @param \apiTester $I
      * @see http://jsonapi.org/format/1.0/#document-compound-documents
      *
      * HTTP Verb: GET
      * URL: /api/v8/modules/favorites
      * @see global $moduleList for posible {module} values
      */
-    public function TestScenarioGetAllModulesFavorites(ApiTester $I)
-    {
+    public function TestScenarioGetAllModulesFavorites(apiTester $I) {
         $I->loginAsAdmin();
         $I->sendJwtAuthorisation();
         $I->sendJsonApiContentNegotiation();
@@ -346,7 +344,7 @@ class ModulesMetaCest
         $I->assertArrayHasKey('data', $decodedResponse);
         $I->assertArrayHasKey('included', $decodedResponse);
 
-        if (isset($decodedResponse['included'][0])) {
+        if(isset($decodedResponse['included'][0])) {
             // response has many results
             $I->assertArrayHasKey('type', $decodedResponse['included'][0]);
             $I->assertArrayHasKey('id', $decodedResponse['included'][0]);
@@ -358,14 +356,14 @@ class ModulesMetaCest
 
     /**
      * Get the current user recently viewed records for all modules
-     * @param \ApiTester $I
+     * @param \apiTester $I
      * @see http://jsonapi.org/format/1.0/#document-compound-documents
      *
      * HTTP Verb: GET
      * URL: /api/v8/modules/viewed
      */
 
-    public function TestScenarioGetModuleRecentlyViewed(ApiTester $I)
+    public function TestScenarioGetModuleRecentlyViewed(apiTester $I)
     {
         $I->loginAsAdmin();
         $I->sendJwtAuthorisation();
@@ -396,14 +394,14 @@ class ModulesMetaCest
 
     /**
      * Get the current user recently viewed records for all modules
-     * @param \ApiTester $I
+     * @param \apiTester $I
      * @see http://jsonapi.org/format/1.0/#document-compound-documents
      *
      * HTTP Verb: GET
      * URL: /api/v8/modules/viewed
      */
 
-    public function TestScenarioGetAllModulesRecentlyViewed(ApiTester $I)
+    public function TestScenarioGetAllModulesRecentlyViewed(apiTester $I)
     {
         $I->loginAsAdmin();
         $I->sendJwtAuthorisation();
@@ -434,13 +432,13 @@ class ModulesMetaCest
 
     /**
      * Get the module filters
-     * @param \ApiTester $I
+     * @param \apiTester $I
      * @see http://jsonapi.org/format/1.0/#document-compound-documents
      *
      * HTTP Verb: GET
      * URL: /api/v8/modules/meta/filters
      */
-    public function TestScenarioModuleFilters(ApiTester $I)
+    public function TestScenarioModuleFilters(apiTester $I)
     {
         $I->loginAsAdmin();
         $I->sendJwtAuthorisation();
@@ -463,13 +461,13 @@ class ModulesMetaCest
 
     /**
      * Get the module menus
-     * @param \ApiTester $I
+     * @param \apiTester $I
      * @see http://jsonapi.org/format/1.0/#document-compound-documents
      *
      * HTTP Verb: GET
      * URL: /api/v8/modules/meta/filters
      */
-    public function TestScenarioModuleMenus(ApiTester $I)
+    public function TestScenarioModuleMenus(apiTester $I)
     {
         $I->loginAsAdmin();
         $I->sendJwtAuthorisation();
@@ -488,4 +486,5 @@ class ModulesMetaCest
         $I->assertArrayHasKey('modules', $decodedResponse['meta']['menu']);
         $I->assertArrayHasKey('all', $decodedResponse['meta']['menu']['modules']);
     }
+
 }

@@ -31,19 +31,25 @@ class AOR_ReportsCest
      * @param \AcceptanceTester $I
      * @param \Step\Acceptance\ListView $listView
      * @param \Step\Acceptance\Reports $reports
+     * @param \Helper\WebDriverHelper $webDriverHelper
      *
      * As an administrator I want to view the reports module.
      */
     public function testScenarioViewReportsModule(
         \AcceptanceTester $I,
         \Step\Acceptance\ListView $listView,
-        \Step\Acceptance\Reports $reports
+        \Step\Acceptance\Reports $reports,
+        \Helper\WebDriverHelper $webDriverHelper
     ) {
         $I->wantTo('View the reports module for testing');
 
+        $I->amOnUrl(
+            $webDriverHelper->getInstanceURL()
+        );
+
         // Navigate to reports list-view
         $I->loginAsAdmin();
-        $I->visitPage('AOR_Reports', 'index');
+        $reports->gotoReports();
         $listView->waitForListViewVisible();
 
         $I->see('Reports', '.module-title-text');
@@ -56,6 +62,7 @@ class AOR_ReportsCest
      * @param \Step\Acceptance\SideBar $sidebar
      * @param \Step\Acceptance\ListView $listView
      * @param \Step\Acceptance\Reports $reports
+     * @param \Helper\WebDriverHelper $webDriverHelper
      *
      * As administrative user I want to create a report with the reports module so that I can test
      * the standard fields.
@@ -66,13 +73,18 @@ class AOR_ReportsCest
         \Step\Acceptance\DetailView $detailView,
         \Step\Acceptance\SideBar $sidebar,
         \Step\Acceptance\ListView $listView,
-        \Step\Acceptance\Reports $reports
+        \Step\Acceptance\Reports $reports,
+        \Helper\WebDriverHelper $webDriverHelper
     ) {
         $I->wantTo('Create a Report');
 
+        $I->amOnUrl(
+            $webDriverHelper->getInstanceURL()
+        );
+
         // Navigate to reports list-view
         $I->loginAsAdmin();
-        $I->visitPage('AOR_Reports', 'index');
+        $reports->gotoReports();
         $listView->waitForListViewVisible();
 
         // Select create report from sidebar
@@ -98,6 +110,7 @@ class AOR_ReportsCest
      * @param \Step\Acceptance\SideBar $sidebar
      * @param \Step\Acceptance\DetailView $detailView
      * @param \Step\Acceptance\Reports $reports
+     * @param \Helper\WebDriverHelper $webDriverHelper
      *
      * As administrative user I want to view the report by selecting it in the list view
      */
@@ -107,13 +120,18 @@ class AOR_ReportsCest
         \Step\Acceptance\EditView $editView,
         \Step\Acceptance\SideBar $sidebar,
         \Step\Acceptance\DetailView $detailView,
-        \Step\Acceptance\Reports $reports
+        \Step\Acceptance\Reports $reports,
+        \Helper\WebDriverHelper $webDriverHelper
     ) {
         $I->wantTo('Select Report from list view');
 
+        $I->amOnUrl(
+            $webDriverHelper->getInstanceURL()
+        );
+
         // Navigate to reports list-view
         $I->loginAsAdmin();
-        $I->visitPage('AOR_Reports', 'index');
+        $reports->gotoReports();
         $listView->waitForListViewVisible();
 
         // Select create report from sidebar
@@ -127,7 +145,7 @@ class AOR_ReportsCest
         $editView->clickSaveButton();
         $detailView->waitForDetailViewVisible();
 
-        $I->visitPage('AOR_Reports', 'index');
+        $reports->gotoReports();
         $listView->waitForListViewVisible();
 
         $listView->clickNameLink($reportName);
@@ -146,6 +164,7 @@ class AOR_ReportsCest
      * @param \Step\Acceptance\EditView $editView
      * @param \Step\Acceptance\SideBar $sidebar
      * @param \Step\Acceptance\Reports $reports
+     * @param \Helper\WebDriverHelper $webDriverHelper
      *
      * As administrative user I want to edit the record by selecting it in the detail view
      */
@@ -155,13 +174,18 @@ class AOR_ReportsCest
         \Step\Acceptance\DetailView $detailView,
         \Step\Acceptance\EditView $editView,
         \Step\Acceptance\SideBar $sidebar,
-        \Step\Acceptance\Reports $reports
+        \Step\Acceptance\Reports $reports,
+        \Helper\WebDriverHelper $webDriverHelper
     ) {
         $I->wantTo('Edit a Report from the detail view');
 
+        $I->amOnUrl(
+            $webDriverHelper->getInstanceURL()
+        );
+
         // Navigate to a report
         $I->loginAsAdmin();
-        $I->visitPage('AOR_Reports', 'index');
+        $reports->gotoReports();
         $listView->waitForListViewVisible();
 
         // Select create report from sidebar
@@ -195,6 +219,7 @@ class AOR_ReportsCest
      * @param \Step\Acceptance\EditView $editView
      * @param \Step\Acceptance\SideBar $sidebar
      * @param \Step\Acceptance\Reports $reports
+     * @param \Helper\WebDriverHelper $webDriverHelper
      *
      * As administrative user I want to duplicate the report
      */
@@ -204,13 +229,18 @@ class AOR_ReportsCest
         \Step\Acceptance\DetailView $detailView,
         \Step\Acceptance\EditView $editView,
         \Step\Acceptance\SideBar $sidebar,
-        \Step\Acceptance\Reports $reports
+        \Step\Acceptance\Reports $reports,
+        \Helper\WebDriverHelper $webDriverHelper
     ) {
         $I->wantTo('Duplicate Report from detail view');
 
+        $I->amOnUrl(
+            $webDriverHelper->getInstanceURL()
+        );
+
         // Navigate to a report
         $I->loginAsAdmin();
-        $I->visitPage('AOR_Reports', 'index');
+        $reports->gotoReports();
         $listView->waitForListViewVisible();
 
         // Select create report from sidebar
@@ -246,6 +276,7 @@ class AOR_ReportsCest
      * @param \Step\Acceptance\SideBar $sidebar
      * @param \Step\Acceptance\DetailView $detailView
      * @param \Step\Acceptance\Reports $reports
+     * @param \Helper\WebDriverHelper $webDriverHelper
      *
      * As administrative user I want to delete the report by selecting it in the detail view
      */
@@ -255,13 +286,18 @@ class AOR_ReportsCest
         \Step\Acceptance\EditView $editView,
         \Step\Acceptance\SideBar $sidebar,
         \Step\Acceptance\DetailView $detailView,
-        \Step\Acceptance\Reports $reports
+        \Step\Acceptance\Reports $reports,
+        \Helper\WebDriverHelper $webDriverHelper
     ) {
         $I->wantTo('Delete Report from detail view');
 
+        $I->amOnUrl(
+            $webDriverHelper->getInstanceURL()
+        );
+
         // Navigate to a report
         $I->loginAsAdmin();
-        $I->visitPage('AOR_Reports', 'index');
+        $reports->gotoReports();
         $listView->waitForListViewVisible();
 
         // Select create report from sidebar

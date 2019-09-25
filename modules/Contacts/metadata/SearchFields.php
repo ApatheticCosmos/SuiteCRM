@@ -62,7 +62,7 @@ $searchFields['Contacts'] =
         'do_not_call' => array('query_type' => 'default', 'input_type' => 'checkbox', 'operator' => '='),
         'phone' => array(
             'query_type' => 'default',
-            'db_field' => array('phone_mobile', 'phone_work', 'phone_other', 'phone_fax', 'assistant_phone', 'phone_home')
+            'db_field' => array('phone_mobile', 'phone_work', 'phone_other', 'phone_fax', 'assistant_phone')
         ),
         'email' => array(
             'query_type' => 'default',
@@ -159,3 +159,4 @@ $searchFields['Contacts'] =
         ),
         //Range Search Support
     );
+

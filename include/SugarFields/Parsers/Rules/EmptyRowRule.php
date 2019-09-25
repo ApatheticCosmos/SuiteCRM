@@ -1,14 +1,11 @@
 <?php
-if (!defined('sugarEntry') || !sugarEntry) {
-    die('Not A Valid Entry Point');
-}
-/**
- *
+if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +16,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,9 +34,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 
 /**
@@ -54,45 +51,43 @@ if (!defined('sugarEntry') || !sugarEntry) {
 
 require_once('include/SugarFields/Parsers/Rules/BaseRule.php');
 
-class EmptyRowRule extends BaseRule
-{
-    public function __construct()
-    {
-    }
+class EmptyRowRule extends BaseRule {
+
+function __construct() {
+
+}
 
 
-    public function parsePanels($panels, $view)
-    {
-        foreach ($panels as $name=>$panel) {
-            foreach ($panel as $rowCount=>$row) {
-                $emptyCount = 0;
+function parsePanels($panels, $view) {
 
-                foreach ($row as $key=>$column) {
-                    if (is_array($column) && (!isset($column['name']) || empty($column['name']))) {
-                        $emptyCount++;
-                    } else {
-                        if (!is_array($column) && (!isset($column) || empty($column))) {
-                            $emptyCount++;
-                        }
-                    }
-                } //foreach
+   foreach($panels as $name=>$panel) {
 
-                // If we have unset everything, then just remove the whole row entirely
-                if ($emptyCount == count($row)) {
-                    unset($panels[$name][$rowCount]);
-                    continue;
-                } else {
-                    if (count($row) > 2) {
-                        foreach ($row as $key=>$column) {
-                            if (empty($column) || $column == '') {
-                                unset($panels[$name][$rowCount][$key]);
-                            }
-                        }
-                    }
-                }
-            } //foreach
-        } //foreach
+   	  foreach($panel as $rowCount=>$row) {
+         $emptyCount = 0;
+
+   	  	 foreach($row as $key=>$column) {
+   	  	 	if(is_array($column) && (!isset($column['name']) || empty($column['name']))) {
+   	  	 	    $emptyCount++;
+   	  	 	} else if(!is_array($column) && (!isset($column) || empty($column))) {
+				$emptyCount++;
+   	  	 	}
+   	  	 } //foreach
+
+	  	 // If we have unset everything, then just remove the whole row entirely
+   	  	 if($emptyCount == count($row)) {
+   	  	 	unset($panels[$name][$rowCount]);
+   	  	 	continue;
+   	  	 } else if(count($row) > 2) {
+   	  	    foreach($row as $key=>$column) {
+   	  	        if(empty($column) || $column == '') {
+   	  	           unset($panels[$name][$rowCount][$key]);
+   	  	        }
+   	  	    }
+   	  	 }
+   	  } //foreach
+   } //foreach
 
    return $panels;
-    }
+}
+
 }

@@ -29,17 +29,25 @@ class CalendarCest
 
     /**
      * @param \AcceptanceTester $I
+     * @param \Step\Acceptance\Calendar $calendar
+     * @param \Helper\WebDriverHelper $webDriverHelper
      *
      * As an administrator I want to view the calendar module.
      */
     public function testScenarioViewCalendarModule(
-        \AcceptanceTester $I
+        \AcceptanceTester $I,
+        \Step\Acceptance\Calendar $calendar,
+        \Helper\WebDriverHelper $webDriverHelper
     ) {
         $I->wantTo('View the calendar module for testing');
 
+        $I->amOnUrl(
+            $webDriverHelper->getInstanceURL()
+        );
+
         // Navigate to calendar list-view
         $I->loginAsAdmin();
-        $I->visitPage('Calendar', 'index');
+        $calendar->gotoCalendar();
 
         $I->see('Calendar', '.moduleTitle');
     }

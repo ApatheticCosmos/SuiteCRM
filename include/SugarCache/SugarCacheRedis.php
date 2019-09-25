@@ -1,11 +1,10 @@
 <?php
-/**
- *
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -16,7 +15,7 @@
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -34,9 +33,9 @@
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 
 require_once('include/SugarCache/SugarCacheAbstract.php');
@@ -71,15 +70,13 @@ class SugarCacheRedis extends SugarCacheAbstract
      */
     public function useBackend()
     {
-        if (!parent::useBackend()) {
+        if ( !parent::useBackend() )
             return false;
-        }
         
-        if (extension_loaded("redis")
+        if ( extension_loaded("redis")
                 && empty($GLOBALS['sugar_config']['external_cache_disabled_redis'])
-                && $this->_getRedisObject()) {
+                && $this->_getRedisObject() )
             return true;
-        }
             
         return false;
     }
@@ -98,15 +95,17 @@ class SugarCacheRedis extends SugarCacheAbstract
     protected function _getRedisObject()
     {
         try {
-            if (!($this->_redis instanceof Redis)) {
+            if ( !($this->_redis instanceOf Redis) ) {
                 $this->_redis = new Redis();
                 $this->_host = SugarConfig::getInstance()->get('external_cache.redis.host', $this->_host);
                 $this->_port = SugarConfig::getInstance()->get('external_cache.redis.port', $this->_port);
-                if (!$this->_redis->connect($this->_host, $this->_port)) {
+                if ( !$this->_redis->connect($this->_host,$this->_port) ) {
                     return false;
                 }
             }
-        } catch (RedisException $e) {
+        }
+        catch (RedisException $e)
+        {
             return false;
         }
         
@@ -119,11 +118,12 @@ class SugarCacheRedis extends SugarCacheAbstract
     protected function _setExternal(
         $key,
         $value
-        ) {
+        )
+    {
         $value = serialize($value);
         $key = $this->_fixKeyName($key);
         
-        $this->_getRedisObject()->set($key, $value);
+        $this->_getRedisObject()->set($key,$value);
         $this->_getRedisObject()->expire($key, $this->_expireTimeout);
     }
     
@@ -132,11 +132,12 @@ class SugarCacheRedis extends SugarCacheAbstract
      */
     protected function _getExternal(
         $key
-        ) {
+        )
+    {
         $key = $this->_fixKeyName($key);
         $returnValue = $this->_getRedisObject()->get($key);
         // return null if we don't get a cache hit
-        if ($returnValue === false) {
+        if ( $returnValue === false ) {
             return null;
         }
         
@@ -150,7 +151,8 @@ class SugarCacheRedis extends SugarCacheAbstract
      */
     protected function _clearExternal(
         $key
-        ) {
+        )
+    {
         $key = $this->_fixKeyName($key);
         $this->_getRedisObject()->delete($key);
     }
@@ -171,6 +173,6 @@ class SugarCacheRedis extends SugarCacheAbstract
      */
     protected function _fixKeyName($key)
     {
-        return str_replace(' ', '_', $key);
+        return str_replace(' ','_',$key);
     }
 }

@@ -172,9 +172,7 @@ $(document).ready(function(){
           if(relData[field]['type'] == 'relationship') {
             modulePath = field;
             if (node) {
-              if (node.module_path) {
-                modulePath = node.module_path + ":" + field;
-              }
+              modulePath = node.module_path + ":" + field;
               modulePathDisplay = node.module_path_display + " : "+relData[field]['module_label'];
             }else{
               modulePathDisplay = $('#report_module option:selected').text() + ' : ' + relData[field]['module_label'];

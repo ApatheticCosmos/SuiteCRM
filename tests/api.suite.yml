@@ -1,4 +1,4 @@
-actor: ApiTester
+actor: apiTester
 modules:
     enabled:
         - \Helper\api

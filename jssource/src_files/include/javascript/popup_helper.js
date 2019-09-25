@@ -4,7 +4,7 @@
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
  * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+ * Copyright (C) 2011 - 2017 SalesAgility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -88,28 +88,35 @@ function confirmDialog(arrayContents, formName) {
 }
 
 function send_back(module, id) {
-  let associated_row_data = associated_javascript_data[id];
+  var associated_row_data = associated_javascript_data[id];
 
-  let request_data = JSON.parse(window.document.forms['popup_query_form'].request_data.value);
+  // cn: bug 12274 - stripping false-positive security envelope
+  SUGAR.util.globalEval("var temp_request_data = " + window.document.forms['popup_query_form'].request_data.value);
+  if (temp_request_data.jsonObject) {
+    var request_data = temp_request_data.jsonObject;
+  } else {
+    var request_data = temp_request_data; // passed data that is NOT incorrectly encoded via JSON.encode();
+  }
+  // cn: end bug 12274 fix
 
-  let passthru_data = Object();
-  if (typeof (request_data.passthru_data) != 'undefined') {
+  var passthru_data = Object();
+  if (typeof(request_data.passthru_data) != 'undefined') {
     passthru_data = request_data.passthru_data;
   }
-  let form_name = request_data.form_name;
-  let field_to_name_array = request_data.field_to_name_array;
+  var form_name = request_data.form_name;
+  var field_to_name_array = request_data.field_to_name_array;
 
   SUGAR.util.globalEval("var call_back_function = window.opener." + request_data.call_back_function);
-  let array_contents = Array();
+  var array_contents = Array();
 
   // constructs the array of values associated to the bean that the user clicked
-  let fill_array_contents = function (the_key, the_name) {
-    let the_value = '';
-    if (module !== '' && id !== '') {
-      if (associated_row_data['DOCUMENT_NAME'] && the_key.toUpperCase() === "NAME") {
+  var fill_array_contents = function (the_key, the_name) {
+    var the_value = '';
+    if (module != '' && id != '') {
+      if (associated_row_data['DOCUMENT_NAME'] && the_key.toUpperCase() == "NAME") {
         the_value = associated_row_data['DOCUMENT_NAME'];
-      } else if ((the_key.toUpperCase() === 'USER_NAME' || the_key.toUpperCase() === 'LAST_NAME' || the_key.toUpperCase() === 'FIRST_NAME')
-        && typeof (is_show_fullname) != 'undefined' && is_show_fullname && form_name !== 'search_form') {
+      } else if ((the_key.toUpperCase() == 'USER_NAME' || the_key.toUpperCase() == 'LAST_NAME' || the_key.toUpperCase() == 'FIRST_NAME')
+        && typeof(is_show_fullname) != 'undefined' && is_show_fullname && form_name != 'search_form') {
         //if it is from searchform, it will search by assigned_user_name like 'ABC%', then it will return nothing
         the_value = associated_row_data['FULL_NAME'];
       } else {
@@ -117,32 +124,33 @@ function send_back(module, id) {
       }
     }
 
-    if (typeof (the_value) == 'string') {
+    if (typeof(the_value) == 'string') {
       the_value = the_value.replace(/\r\n|\n|\r/g, '\\n');
     }
 
     array_contents.push('"' + the_name + '":"' + the_value + '"');
-  };
+  }
 
-  for (let the_key in field_to_name_array) {
-    if (the_key !== 'toJSON') {
+  for (var the_key in field_to_name_array) {
+    if (the_key != 'toJSON') {
       if (YAHOO.lang.isArray(field_to_name_array[the_key])) {
-        for (let i = 0; i < field_to_name_array[the_key].length; i++) {
+        for (var i = 0; i < field_to_name_array[the_key].length; i++) {
           fill_array_contents(the_key, field_to_name_array[the_key][i]);
         }
-      } else {
+      }
+      else {
         fill_array_contents(the_key, field_to_name_array[the_key]);
       }
     }
   }
 
-  let popupConfirm = confirmDialog(array_contents, form_name);
+  var popupConfirm = confirmDialog(array_contents, form_name);
 
-  let name_to_value_array = JSON.parse('{' + array_contents.join(",") + '}');
+  SUGAR.util.globalEval("var name_to_value_array = {" + array_contents.join(",") + "}");
 
   closePopup();
 
-  let result_data = {
+  var result_data = {
     "form_name": form_name,
     "name_to_value_array": name_to_value_array,
     "passthru_data": passthru_data,
@@ -152,29 +160,31 @@ function send_back(module, id) {
 }
 
 function send_back_teams(module, form, field, error_message, request_data, form_team_id) {
-  let array_contents = Array();
+  var array_contents = Array();
 
   if (form_team_id) {
     array_contents.push(form_team_id);
   } else {
-    for (let i = 0; i < form.elements.length; i++) {
-      if (form.elements[i].name === field) {
-        if (form.elements[i].checked === true) {
+    var j = 0;
+    for (i = 0; i < form.elements.length; i++) {
+      if (form.elements[i].name == field) {
+        if (form.elements[i].checked == true) {
           array_contents.push(form.elements[i].value);
         }
       }
     }
   }
 
-  if (array_contents.length === 0) {
+  if (array_contents.length == 0) {
     window.alert(error_message);
     return;
   }
 
-  let array_teams = new Array();
-  for (let team_id in array_contents) {
+  var field_to_name_array = request_data.field_to_name_array;
+  var array_teams = new Array();
+  for (team_id in array_contents) {
     if (typeof array_contents[team_id] == 'string') {
-      let team = {
+      var team = {
         "team_id": associated_javascript_data[array_contents[team_id]].ID,
         "team_name": associated_javascript_data[array_contents[team_id]].NAME
       };
@@ -182,58 +192,53 @@ function send_back_teams(module, form, field, error_message, request_data, form_
     }
   }
 
-  let passthru_data = Object();
+  var passthru_data = Object();
 
   if (typeof request_data.call_back_function == 'undefined' && typeof request_data == 'object') {
     request_data = YAHOO.lang.JSON.parse(request_data.value);
   }
 
-  if (typeof (request_data.passthru_data) != 'undefined') {
+  if (typeof(request_data.passthru_data) != 'undefined') {
     passthru_data = request_data.passthru_data;
   }
 
-  let form_name = request_data.form_name;
-  let field_name = request_data.field_name;
+  var form_name = request_data.form_name;
+  var field_name = request_data.field_name;
 
   closePopup();
 
   SUGAR.util.globalEval("var call_back_function = window.opener." + request_data.call_back_function);
-
-  let result_data = {
+  var result_data = {
     "form_name": form_name,
     "field_name": field_name,
     "teams": array_teams,
     "passthru_data": passthru_data
   };
   call_back_function(result_data);
+
 }
 
 function send_back_selected(module, form, field, error_message, request_data) {
-  let array_contents = Array();
-  let j = 0;
-  for (let i = 0; i < form.elements.length; i++) {
-    if (form.elements[i].name === field) {
-      if (form.elements[i].checked === true) {
+  var array_contents = Array();
+  var j = 0;
+  for (i = 0; i < form.elements.length; i++) {
+    if (form.elements[i].name == field) {
+      if (form.elements[i].checked == true) {
         ++j;
         array_contents.push('"' + "ID_" + j + '":"' + form.elements[i].value + '"');
       }
     }
   }
 
-  if (array_contents.length === 0) {
+  if (array_contents.length == 0) {
     window.alert(error_message);
     return;
   }
 
   SUGAR.util.globalEval("var selection_list_array = {" + array_contents.join(",") + "}");
 
-  let form_request_data = window.document.forms['popup_query_form'].request_data.value;
-
-  if (/^[\],:{}\s]*$/.test(form_request_data.replace(/\\["\\\/bfnrtu]/g, '@').replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').replace(/(?:^|:|,)(?:\s*\[)+/g, ''))) {
-    SUGAR.util.globalEval("var temp_request_data = " + window.document.forms['popup_query_form'].request_data.value);
-  } else {
-    return;
-  }
+  // cn: bug 12274 - stripping false-positive security envelope
+  SUGAR.util.globalEval("var temp_request_data = " + window.document.forms['popup_query_form'].request_data.value);
 
   if (temp_request_data.jsonObject) {
     var request_data = temp_request_data.jsonObject;
@@ -241,16 +246,19 @@ function send_back_selected(module, form, field, error_message, request_data) {
     var request_data = temp_request_data; // passed data that is NOT incorrectly encoded via JSON.encode();
   }
 
-  let passthru_data = Object();
+  // cn: end bug 12274 fix
+
+  var passthru_data = Object();
   if (typeof(request_data.passthru_data) != 'undefined') {
     passthru_data = request_data.passthru_data;
   }
-  let form_name = request_data.form_name;
+  var form_name = request_data.form_name;
+  var field_to_name_array = request_data.field_to_name_array;
 
   closePopup();
 
   SUGAR.util.globalEval("var call_back_function = window.opener." + request_data.call_back_function);
-  let result_data = {
+  var result_data = {
     "form_name": form_name,
     "selection_list": selection_list_array,
     "passthru_data": passthru_data,

@@ -30,18 +30,26 @@ class jjwg_Address_CacheCest
     /**
      * @param \AcceptanceTester $I
      * @param \Step\Acceptance\ListView $listView
+     * @param \Step\Acceptance\MapsAddressCache $mapsAddressCache
+     * @param \Helper\WebDriverHelper $webDriverHelper
      *
      * As an administrator I want to view the mapsAddressCache module.
      */
     public function testScenarioViewMapsAddressCacheModule(
         \AcceptanceTester $I,
-        \Step\Acceptance\ListView $listView
+        \Step\Acceptance\ListView $listView,
+        \Step\Acceptance\MapsAddressCache $mapsAddressCache,
+        \Helper\WebDriverHelper $webDriverHelper
     ) {
         $I->wantTo('View the mapsAddressCache module for testing');
 
+        $I->amOnUrl(
+            $webDriverHelper->getInstanceURL()
+        );
+
         // Navigate to mapsAddressCache list-view
         $I->loginAsAdmin();
-        $I->visitPage('jjwg_Address_Cache', 'index');
+        $mapsAddressCache->gotoMapsAddressCache();
         $listView->waitForListViewVisible();
 
         $I->see('Maps - Address Cache', '.module-title-text');
@@ -52,6 +60,7 @@ class jjwg_Address_CacheCest
      * @param \Step\Acceptance\DetailView $detailView
      * @param \Step\Acceptance\ListView $listView
      * @param \Step\Acceptance\MapsAddressCache $mapsAddressCache
+     * @param \Helper\WebDriverHelper $webDriverHelper
      *
      * As administrative user I want to create a maps address cache so that I can test
      * the standard fields.
@@ -60,13 +69,18 @@ class jjwg_Address_CacheCest
         \AcceptanceTester $I,
         \Step\Acceptance\DetailView $detailView,
         \Step\Acceptance\ListView $listView,
-        \Step\Acceptance\MapsAddressCache $mapsAddressCache
+        \Step\Acceptance\MapsAddressCache $mapsAddressCache,
+        \Helper\WebDriverHelper $webDriverHelper
     ) {
         $I->wantTo('Create maps address cache');
 
+        $I->amOnUrl(
+            $webDriverHelper->getInstanceURL()
+        );
+
         // Navigate to maps address cache list-view
         $I->loginAsAdmin();
-        $I->visitPage('jjwg_Address_Cache', 'index');
+        $mapsAddressCache->gotoMapsAddressCache();
         $listView->waitForListViewVisible();
 
         // Create maps address cache

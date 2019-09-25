@@ -1,14 +1,11 @@
 <?php
-if (!defined('sugarEntry') || !sugarEntry) {
-    die('Not A Valid Entry Point');
-}
-/**
- *
+if (!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2016 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +16,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,9 +34,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 $dictionary['Campaign'] = array('audited' => true,
     'comment' => 'Campaigns are a series of operations undertaken to accomplish a purpose, usually acquiring leads',
@@ -70,7 +67,7 @@ $dictionary['Campaign'] = array('audited' => true,
             'vname' => 'LBL_CAMPAIGN_NAME',
             'dbType' => 'varchar',
             'type' => 'name',
-            'len' => '255',
+            'len' => '50',
             'comment' => 'The name of the campaign',
             'importable' => 'required',
             'required' => true,
@@ -140,7 +137,7 @@ $dictionary['Campaign'] = array('audited' => true,
                 'vname' => 'LBL_CURRENCY',
                 'type' => 'id',
                 'group' => 'currency_id',
-                'function' => array('name' => 'getCurrencyDropDown', 'returns' => 'html','onListView' => true, 'onListView' => true),
+                'function' => array('name' => 'getCurrencyDropDown', 'returns' => 'html'),
                 'required' => false,
                 'do_report' => false,
                 'reportable' => false,
@@ -195,8 +192,7 @@ $dictionary['Campaign'] = array('audited' => true,
             'name' => 'content',
             'vname' => 'LBL_CAMPAIGN_CONTENT',
             'type' => 'text',
-            'comment' => 'The campaign description',
-            'inline_edit' => false
+            'comment' => 'The campaign description'
         ),
         'prospectlists' => array(
             'name' => 'prospectlists',
@@ -279,7 +275,7 @@ $dictionary['Campaign'] = array('audited' => true,
             'link_file' => 'modules/Campaigns/ProspectLink.php'
         ),
 
-        "survey" => array(
+        "survey" => array (
                 'name' => 'survey',
                 'type' => 'link',
                 'relationship' => 'surveys_campaigns',
@@ -291,7 +287,7 @@ $dictionary['Campaign'] = array('audited' => true,
                 'link_type'=>'one',
                 'side' => 'left',
         ),
-        "survey_name" => array(
+        "survey_name" => array (
                 'name' => 'survey_name',
                 'type' => 'relate',
                 'source' => 'non-db',
@@ -303,13 +299,13 @@ $dictionary['Campaign'] = array('audited' => true,
                 'module' => 'Surveys',
                 'rname' => 'name',
         ),
-        "survey_id" => array(
+        "survey_id" => array (
                 'name' => 'survey_id',
                 'type' => 'id',
                 'reportable' => false,
                 'vname' => 'LBL_CAMPAIGN_SURVEYS',
         ),
-        "surveyresponses_campaigns" => array(
+        "surveyresponses_campaigns" => array (
                 'name' => 'surveyresponses_campaigns',
                 'type' => 'link',
                 'relationship' => 'surveyresponses_campaigns',
@@ -330,11 +326,6 @@ $dictionary['Campaign'] = array('audited' => true,
             'name' => 'idx_campaign_name',
             'type' => 'index',
             'fields' => array('name')
-        ),
-        array(
-            'name' => 'idx_survey_id',
-            'type' => 'index',
-            'fields' => array('survey_id')
         ),
     ),
 

@@ -1,14 +1,11 @@
 <?php
-if (!defined('sugarEntry') || !sugarEntry) {
-    die('Not A Valid Entry Point');
-}
-/**
- *
+if (!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
  *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2016 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +16,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,9 +34,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 class ViewAdminsettings extends SugarView
 {
@@ -117,20 +114,18 @@ class ViewAdminsettings extends SugarView
                     $modulesWithFeeds = SugarFeed::getAllFeedModules();
 
                     foreach ($modulesWithFeeds as $currFeedModule) {
-                        SugarFeed::disableModuleFeed($currFeedModule, false);
+                        SugarFeed::disableModuleFeed($currFeedModule, FALSE);
                     }
                 }
 
-                $admin->retrieveSettings(false, true);
+                $admin->retrieveSettings(FALSE, TRUE);
                 SugarFeed::flushBackendCache();
-            } else {
-                if ($_REQUEST['process'] == 'deleteRecords') {
-                    if (!isset($db)) {
-                        $db = DBManagerFactory::getInstance();
-                    }
-                    $db->query("UPDATE sugarfeed SET deleted = '1'");
-                    echo(translate('LBL_RECORDS_DELETED', 'SugarFeed'));
+            } else if ($_REQUEST['process'] == 'deleteRecords') {
+                if (!isset($db)) {
+                    $db = DBManagerFactory::getInstance();
                 }
+                $db->query("UPDATE sugarfeed SET deleted = '1'");
+                echo(translate('LBL_RECORDS_DELETED', 'SugarFeed'));
             }
 
 
@@ -167,7 +162,9 @@ class ViewAdminsettings extends SugarView
                 $userFeedEnabled = $currModule['enabled'];
                 continue;
             } elseif ($module == 'Facebook' || $module == 'Twitter') {
+
                 $currModule['label'] = $module;
+
             } else {
                 $currModule['label'] = $GLOBALS['app_list_strings']['moduleList'][$module];
             }
@@ -188,3 +185,4 @@ class ViewAdminsettings extends SugarView
         $sugar_smarty->display('modules/SugarFeed/tpls/AdminSettings.tpl');
     }
 }
+

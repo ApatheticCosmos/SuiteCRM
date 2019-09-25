@@ -1,14 +1,11 @@
 <?php
-if (!defined('sugarEntry') || !sugarEntry) {
-    die('Not A Valid Entry Point');
-}
-/**
- *
+if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +16,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,65 +34,62 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 
 require_once('include/SugarFields/Parsers/Rules/BaseRule.php');
 
-class ActivitiesParseRule extends BaseRule
-{
-    public function __construct()
-    {
-    }
+class ActivitiesParseRule extends BaseRule {
+
+function __construct() {
+
+}
 
     /**
      * @deprecated deprecated since version 7.6, PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code, use __construct instead
      */
-    public function ActivitiesParseRule()
-    {
+    function ActivitiesParseRule(){
         $deprecatedMessage = 'PHP4 Style Constructors are deprecated and will be remove in 7.8, please update your code';
-        if (isset($GLOBALS['log'])) {
+        if(isset($GLOBALS['log'])) {
             $GLOBALS['log']->deprecated($deprecatedMessage);
-        } else {
+        }
+        else {
             trigger_error($deprecatedMessage, E_USER_DEPRECATED);
         }
         self::__construct();
     }
 
 
-    public function preParse($panels, $view)
-    {
-        if ($view == 'DetailView') {
-            foreach ($panels as $name=>$panel) {
-                foreach ($panel as $rowCount=>$row) {
-                    foreach ($row as $key=>$column) {
-                        if ($this->matches($column, '/^duration_minutes$/')) {
-                            $panels[$name][$rowCount][$key] = 'duration_hours';
-                        } else {
-                            if ($this->matches($column, '/^time_start$/')) {
-                                $panels[$name][$rowCount][$key] = 'date_start';
-                            }
-                        }
-                    } //foreach
-                } //foreach
-            } //foreach
-        }
-        return $panels;
-    }
+function preParse($panels, $view) {
+	if($view == 'DetailView') {
+		foreach($panels as $name=>$panel) {
+	   	  foreach($panel as $rowCount=>$row) {
+	   	  	 foreach($row as $key=>$column) {
+				if($this->matches($column, '/^duration_minutes$/')) {
+	   	  	 	   $panels[$name][$rowCount][$key] = 'duration_hours';
+				} else if($this->matches($column, '/^time_start$/')) {
+				   $panels[$name][$rowCount][$key] = 'date_start';
+				}
+	   	  	 } //foreach
+	   	  } //foreach
+	   } //foreach
+	}
+    return $panels;
+}
 
-    public function parsePanels($panels, $view)
-    {
-        foreach ($panels as $name=>$panel) {
-            foreach ($panel as $rowCount=>$row) {
-                foreach ($row as $key=>$column) {
-                    if ($this->matches($column, '/^duration_minutes$/si')) {
-                        $panels[$name][$rowCount][$key] = '';
-                    }
-                } //foreach
-            } //foreach
-        } //foreach
+function parsePanels($panels, $view) {
+	foreach($panels as $name=>$panel) {
+   	  foreach($panel as $rowCount=>$row) {
+   	  	 foreach($row as $key=>$column) {
+			if($this->matches($column, '/^duration_minutes$/si')) {
+   	  	 	   $panels[$name][$rowCount][$key] = '';
+			}
+   	  	 } //foreach
+   	  } //foreach
+   } //foreach
    return $panels;
-    }
+}
+
 }

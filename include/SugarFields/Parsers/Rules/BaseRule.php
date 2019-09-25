@@ -1,14 +1,11 @@
 <?php
-if (!defined('sugarEntry') || !sugarEntry) {
-    die('Not A Valid Entry Point');
-}
-/**
- *
+if(!defined('sugarEntry') || !sugarEntry) die('Not A Valid Entry Point');
+/*********************************************************************************
  * SugarCRM Community Edition is a customer relationship management program developed by
  * SugarCRM, Inc. Copyright (C) 2004-2013 SugarCRM Inc.
- *
- * SuiteCRM is an extension to SugarCRM Community Edition developed by SalesAgility Ltd.
- * Copyright (C) 2011 - 2018 SalesAgility Ltd.
+
+ * SuiteCRM is an extension to SugarCRM Community Edition developed by Salesagility Ltd.
+ * Copyright (C) 2011 - 2014 Salesagility Ltd.
  *
  * This program is free software; you can redistribute it and/or modify it under
  * the terms of the GNU Affero General Public License version 3 as published by the
@@ -19,7 +16,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
  *
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * FOR A PARTICULAR PURPOSE.  See the GNU Affero General Public License for more
  * details.
  *
  * You should have received a copy of the GNU Affero General Public License along with
@@ -37,9 +34,9 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * In accordance with Section 7(b) of the GNU Affero General Public License version 3,
  * these Appropriate Legal Notices must retain the display of the "Powered by
  * SugarCRM" logo and "Supercharged by SuiteCRM" logo. If the display of the logos is not
- * reasonably feasible for technical reasons, the Appropriate Legal Notices must
- * display the words "Powered by SugarCRM" and "Supercharged by SuiteCRM".
- */
+ * reasonably feasible for  technical reasons, the Appropriate Legal Notices must
+ * display the words  "Powered by SugarCRM" and "Supercharged by SuiteCRM".
+ ********************************************************************************/
 
 
 /**
@@ -51,60 +48,49 @@ if (!defined('sugarEntry') || !sugarEntry) {
  * @author Collin Lee
  */
 
-class BaseRule
-{
-    public function __construct()
-    {
-    }
+class BaseRule {
 
-    public function preParse($panels, $view)
-    {
-        return $panels;
-    }
+function __construct() {
 
-    public function postParse($panels, $view)
-    {
-        return $this->parsePanels($panels, $view);
-    }
+}
 
-    public function parsePanels($panels, $view)
-    {
-        return $panels;
-    }
+function preParse($panels, $view) {
+   return $panels;
+}
 
-    public function isCustomField($mixed)
-    {
-        if (is_array($mixed) && isset($mixed['name']) && preg_match('/.*?_c$/s', $mixed['name'])) {
-            return true;
-        } else {
-            if (!is_array($mixed) && isset($mixed) && preg_match('/.*?_c$/s', $mixed)) {
-                return true;
-            }
-        }
-        return false;
-    }
+function postParse($panels, $view) {
+   return $this->parsePanels($panels, $view);
+}
 
-    public function matches($mixed, $regExp)
-    {
-        if (is_array($mixed) && isset($mixed['name']) && preg_match($regExp, $mixed['name'])) {
-            return true;
-        } else {
-            if (!is_array($mixed) && isset($mixed) && preg_match($regExp, $mixed)) {
-                return true;
-            }
-        }
-        return false;
-    }
+function parsePanels($panels, $view) {
+   return $panels;
+}
 
-    public function getMatch($mixed, $regExp)
-    {
-        if (is_array($mixed) && isset($mixed['name']) && preg_match($regExp, $mixed['name'], $matches)) {
-            return $matches;
-        } else {
-            if (!is_array($mixed) && isset($mixed) && preg_match($regExp, $mixed, $matches)) {
-                return $matches;
-            }
-        }
-        return null;
-    }
+function isCustomField($mixed) {
+   if(is_array($mixed) && isset($mixed['name']) && preg_match('/.*?_c$/s', $mixed['name'])) {
+   	  return true;
+   } else if(!is_array($mixed) && isset($mixed) && preg_match('/.*?_c$/s', $mixed)) {
+   	  return true;
+   }
+   return false;
+}
+
+function matches($mixed, $regExp) {
+   if(is_array($mixed) && isset($mixed['name']) && preg_match($regExp, $mixed['name'])) {
+   	  return true;
+   } else if(!is_array($mixed) && isset($mixed) && preg_match($regExp, $mixed)) {
+   	  return true;
+   }
+   return false;
+}
+
+function getMatch($mixed, $regExp) {
+   if(is_array($mixed) && isset($mixed['name']) && preg_match($regExp, $mixed['name'], $matches)) {
+   	  return $matches;
+   } else if(!is_array($mixed) && isset($mixed) && preg_match($regExp, $mixed, $matches)) {
+   	  return $matches;
+   }
+   return null;
+}
+
 }

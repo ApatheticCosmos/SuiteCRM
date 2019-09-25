@@ -191,25 +191,21 @@ class Zend_Search_Lucene_Index_SegmentMerger
 
                     if (!($bits & 2)) { // Text data
                         $storedFields[] =
-                                 new Zend_Search_Lucene_Field(
-                                     $fieldInfo->name,
-                                     $fdtFile->readString(),
-                                     'UTF-8',
-                                     true,
-                                     $fieldInfo->isIndexed,
-                                     $bits & 1
-                                 );
+                                 new Zend_Search_Lucene_Field($fieldInfo->name,
+                                                              $fdtFile->readString(),
+                                                              'UTF-8',
+                                                              true,
+                                                              $fieldInfo->isIndexed,
+                                                              $bits & 1 );
                     } else {            // Binary data
                         $storedFields[] =
-                                 new Zend_Search_Lucene_Field(
-                                     $fieldInfo->name,
-                                     $fdtFile->readBinary(),
-                                     '',
-                                     true,
-                                     $fieldInfo->isIndexed,
-                                     $bits & 1,
-                                     true
-                                 );
+                                 new Zend_Search_Lucene_Field($fieldInfo->name,
+                                                              $fdtFile->readBinary(),
+                                                              '',
+                                                              true,
+                                                              $fieldInfo->isIndexed,
+                                                              $bits & 1,
+                                                              true);
                     }
                 }
 

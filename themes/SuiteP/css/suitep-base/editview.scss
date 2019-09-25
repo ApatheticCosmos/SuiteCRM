@@ -1203,6 +1203,12 @@ p.error {
   margin: 0;
 }
 
+.error {
+  border: none;
+  color: $alert-danger-text;
+  background: transparent;
+}
+
 .error:empty {
   padding: 0;
 }
@@ -1220,7 +1226,7 @@ div.content p.error {
 
 .error a {
   font-weight: 600;
-  color: white;
+  color: $link-color;
   text-decoration: underline;
 }
 
@@ -1234,7 +1240,7 @@ div.content p.error {
 }
 
 .error a:hover {
-  color: black;
+  color: $link-color-hover;
 }
 
 .success {
@@ -4313,11 +4319,6 @@ h3 span {
   cursor: pointer;
 }
 
-.fix-inlineEdit-textarea {
-  word-wrap: break-word;
-  white-space: pre-wrap;
-}
-
 .inlineEditIcon {
   color: #F08377;
   padding-left: 3px;
@@ -5423,7 +5424,7 @@ body.yui-skin-sam.masked .yui-panel-container.yui-dialog.yui-simple-dialog.shado
   top: 100px;
   padding: 20px;
   width: 100%;
-  position: fixed;
+  z-index: 103100;
 }
 
 body.yui-skin-sam.masked .yui-panel-container.yui-dialog.yui-simple-dialog.shadow[id="container_pbss_date_start_trigger_c"] {

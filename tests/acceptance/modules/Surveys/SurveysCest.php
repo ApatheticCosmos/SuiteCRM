@@ -30,18 +30,26 @@ class SurveysCest
     /**
      * @param \AcceptanceTester $I
      * @param \Step\Acceptance\ListView $listView
+     * @param \Step\Acceptance\Surveys $surveys
+     * @param \Helper\WebDriverHelper $webDriverHelper
      *
      * As an administrator I want to view the surveys module.
      */
     public function testScenarioViewSurveysModule(
         \AcceptanceTester $I,
-        \Step\Acceptance\ListView $listView
+        \Step\Acceptance\ListView $listView,
+        \Step\Acceptance\Surveys $surveys,
+        \Helper\WebDriverHelper $webDriverHelper
     ) {
         $I->wantTo('View the surveys module for testing');
 
+        $I->amOnUrl(
+            $webDriverHelper->getInstanceURL()
+        );
+
         // Navigate to surveys list-view
         $I->loginAsAdmin();
-        $I->visitPage('Surveys', 'index');
+        $surveys->gotoSurveys();
         $listView->waitForListViewVisible();
 
         $I->see('Surveys', '.module-title-text');

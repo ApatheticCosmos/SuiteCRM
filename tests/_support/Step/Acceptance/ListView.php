@@ -4,7 +4,7 @@ namespace Step\Acceptance;
 
 use \AcceptanceTester as Tester;
 
-class ListView extends Tester
+class ListView  extends Tester
 {
 
     /**
@@ -13,7 +13,7 @@ class ListView extends Tester
     public function clickNameLink($name)
     {
         $I = $this;
-        $I->waitForElementVisible('//*[@id="MassUpdate"]');
+        $I->waitForElementVisible('//*[@id="MassUpdate"]', 10);
         $I->click($name, '//*[@id="MassUpdate"]/div[3]/table');
     }
 
@@ -23,22 +23,8 @@ class ListView extends Tester
     public function clickFilterButton()
     {
         $I = $this;
-        // TODO: Might be able to use waitForElementClickable here in the future when we're on a higher version of Codeception?
-        $I->click('a.glyphicon-filter', '.searchLink');
+        $I->click('a.glyphicon-filter','.searchLink');
         $I->waitForFilterModalVisible();
-    }
-
-    /**
-     * Clears the list-view filter
-     */
-    public function clearFilterButton()
-    {
-        $I = $this;
-        $I->clickFilterButton();
-        $I->click('Quick Filter');
-        $I->fillField('#name_basic', '');
-        $I->click('Search', '.submitButtons');
-        $I->waitForListViewVisible();
     }
 
     /**
@@ -48,18 +34,18 @@ class ListView extends Tester
     public function waitForListViewVisible()
     {
         $I = $this;
-        $I->waitForElementVisible('.listViewBody');
+        $I->waitForElementVisible('.listViewBody', 120);
     }
 
     public function waitForFilterModalVisible()
     {
         $I = $this;
-        $I->waitForElementVisible('#searchDialog');
+        $I->waitForElementVisible('#searchDialog', 120);
     }
 
     public function waitForFilterModalNotVisible()
     {
         $I = $this;
-        $I->waitForElementNotVisible('#searchDialog');
+        $I->waitForElementNotVisible('#searchDialog', 120);
     }
 }

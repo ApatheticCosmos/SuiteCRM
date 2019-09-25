@@ -5,6 +5,15 @@ namespace Step\Acceptance;
 class Meetings extends \AcceptanceTester
 {
     /**
+     * Navigate to meetings module
+     */
+    public function gotoMeetings()
+    {
+        $I = new NavigationBar($this->getScenario());
+        $I->clickAllMenuItem('Meetings');
+    }
+
+    /**
      * Create a meeting
      *
      * @param $name
@@ -24,7 +33,7 @@ class Meetings extends \AcceptanceTester
         $I->fillField('#description', $faker->text());
         $I->fillField('#location', $faker->city());
 
-        $I->waitForElementVisible('#date_start_hours');
+        $I->waitForElementVisible('#date_start_hours', 120);
 
         $I->selectOption('#duration', '15 minutes');
         $I->selectOption('#status', 'Held');

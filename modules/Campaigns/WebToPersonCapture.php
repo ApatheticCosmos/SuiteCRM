@@ -41,7 +41,6 @@
 if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
-use SuiteCRM\Utility\SuiteValidator;
 
 require_once 'include/formbase.php';
 
@@ -63,8 +62,7 @@ if (isset($_POST['campaign_id']) && !empty($_POST['campaign_id'])) {
     $_POST['client_id_address'] = query_client_ip();
     $campaign = new Campaign();
     $campaign_id = $campaign->db->quote($_POST['campaign_id']);
-    $isValidator = new SuiteValidator();
-    if (!$isValidator->isValidId($campaign_id)) {
+    if(!isValidId($campaign_id)) {
         throw new RuntimeException('Invalid ID requested in Person Capture');
     }
     $camp_query = "select name,id from campaigns where id='$campaign_id'";
@@ -125,6 +123,7 @@ if (isset($_POST['campaign_id']) && !empty($_POST['campaign_id'])) {
         $optInPrefix = 'opt_in_';
 
         if (!empty($person)) {
+
             $filteredFieldsFromPersonBean = filterFieldsFromBeans(array($person));
             $possiblePersonCaptureFields = array('campaign_id', 'assigned_user_id');
             foreach ($filteredFieldsFromPersonBean[0]->fields as $field) {
@@ -140,9 +139,6 @@ if (isset($_POST['campaign_id']) && !empty($_POST['campaign_id'])) {
                 } else {
                     if (array_key_exists($k, $person) || array_key_exists($k, $person->field_defs)) {
                         if (in_array($k, $possiblePersonCaptureFields)) {
-                            if (is_array($v)) {
-                                $v = encodeMultienumValue($v);
-                            }
                             $person->$k = $v;
                         } else {
                             LoggerManager::getLogger()->warn('Trying to set a non-valid field via WebToPerson Form: ' . $k);
@@ -218,7 +214,7 @@ if (isset($_POST['campaign_id']) && !empty($_POST['campaign_id'])) {
                 if (stristr($optInEmailField, '_default') !== false) {
                     $emailField = str_replace('_default', '', $optInEmailField);
 
-                    if (!in_array($emailField, $optInEmailFields)) {
+                    if(!in_array($emailField, $optInEmailFields)) {
                         $optedOut[] = $emailField;
                     }
 
@@ -233,7 +229,7 @@ if (isset($_POST['campaign_id']) && !empty($_POST['campaign_id'])) {
                     $sea = new EmailAddress();
                     $emailId = $sea->AddUpdateEmailAddress($person->$optInEmailField);
                     if ($sea->retrieve($emailId)) {
-                        if (in_array($optInEmailField, $optedOut)) {
+                        if(in_array($optInEmailField, $optedOut)) {
                             $sea->resetOptIn();
                             continue;
                         } else {
@@ -241,16 +237,21 @@ if (isset($_POST['campaign_id']) && !empty($_POST['campaign_id'])) {
                         }
 
                         $configurator = new Configurator();
-                        if ($configurator->isConfirmOptInEnabled()) {
+                        if($configurator->isConfirmOptInEnabled()) {
                             $emailman = new EmailMan();
-
-                            if (!$emailman->sendOptInEmail($sea, $person->module_name, $person->id)) {
+                            $date = new DateTime();
+                            $now = $date->format($timedate::DB_DATETIME_FORMAT);
+                            
+                            if(!$emailman->sendOptInEmail($sea, $person->module_name, $person->id)) {
                                 $errors[] = 'Confirm Opt In email sending failed, please check email address is correct: ' . $sea->email_address;
+                                $sea->confirm_opt_in_fail_date = $now;
+                            } else {
+                                $sea->confirm_opt_in_sent_date = $now;
                             }
                         }
-                        if ($configurator->isOptInEnabled()) {
+                        if($configurator->isOptInEnabled()) {
                             $date = TimeDate::getInstance()->nowDb();
-                            $date_test = $timedate->to_display_date($date, false);
+                            $date_test = $timedate->to_display_date($date,false);
                             $person->lawful_basis = '^consent^';
                             $person->date_reviewed = $date_test;
                             $person->lawful_basis_source = 'website';
@@ -338,13 +339,15 @@ if (isset($_POST['campaign_id']) && !empty($_POST['campaign_id'])) {
             if (isset($mod_strings['LBL_THANKS_FOR_SUBMITTING'])) {
                 echo $mod_strings['LBL_THANKS_FOR_SUBMITTING'];
             } else {
-                if (isset($errors) && $errors) {
+                
+                if(isset($errors) && $errors) {
                     $log = LoggerManager::getLogger();
-                    $log->error('Success but some error occurred: ' . implode(', ', $errors));
+                    $log->error('Success but some error occured: ' . implode(', ', $errors)); 
                 }
                 
                 //If the custom module does not have a LBL_THANKS_FOR_SUBMITTING label, default to this general one
                 echo $app_strings['LBL_THANKS_FOR_SUBMITTING'];
+                
             }
             header($_SERVER['SERVER_PROTOCOL'].'201', true, 201);
         }

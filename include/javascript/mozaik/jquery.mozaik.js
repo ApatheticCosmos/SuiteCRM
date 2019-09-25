@@ -323,6 +323,7 @@ var plgBackground = {
                     $.get(url, function (resp) {
                         addEditorListElement(name, resp, true, settings.toolPlugins);
                         onResize();
+                        //!@#
                     });
                 }
                 $(window).mouseup();

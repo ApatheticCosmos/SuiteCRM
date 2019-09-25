@@ -1,7 +1,7 @@
 <?php
 
 /*
- * @author SalesAgility Ltd <support@salesagility.com>
+ * @author Salesagility Ltd <support@salesagility.com>
  * Date: 15/01/14
  * Time: 09:14
  *

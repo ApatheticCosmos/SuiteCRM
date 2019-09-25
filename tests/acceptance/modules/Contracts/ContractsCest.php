@@ -30,18 +30,26 @@ class ContractsCest
     /**
      * @param \AcceptanceTester $I
      * @param \Step\Acceptance\ListView $listView
+     * @param \Step\Acceptance\Contracts $contracts
+     * @param \Helper\WebDriverHelper $webDriverHelper
      *
      * As an administrator I want to view the contracts module.
      */
     public function testScenarioViewContractsModule(
         \AcceptanceTester $I,
-        \Step\Acceptance\ListView $listView
+        \Step\Acceptance\ListView $listView,
+        \Step\Acceptance\Contracts $contracts,
+        \Helper\WebDriverHelper $webDriverHelper
     ) {
         $I->wantTo('View the contracts module for testing');
 
+        $I->amOnUrl(
+            $webDriverHelper->getInstanceURL()
+        );
+
         // Navigate to contracts list-view
         $I->loginAsAdmin();
-        $I->visitPage('AOS_Contracts', 'index');
+        $contracts->gotoContracts();
         $listView->waitForListViewVisible();
 
         $I->see('Contracts', '.module-title-text');
@@ -52,7 +60,8 @@ class ContractsCest
      * @param \Step\Acceptance\DetailView $detailView
      * @param \Step\Acceptance\ListView $listView
      * @param \Step\Acceptance\Contracts $contract
-     * @param \Step\Acceptance\AccountsTester $account
+     * @param \Step\Acceptance\Accounts $account
+     * @param \Helper\WebDriverHelper $webDriverHelper
      *
      * As administrative user I want to create a contract so that I can test
      * the standard fields.
@@ -62,13 +71,18 @@ class ContractsCest
         \Step\Acceptance\DetailView $detailView,
         \Step\Acceptance\ListView $listView,
         \Step\Acceptance\Contracts $contract,
-        \Step\Acceptance\AccountsTester $account
+        \Step\Acceptance\Accounts $account,
+        \Helper\WebDriverHelper $webDriverHelper
     ) {
         $I->wantTo('Create a Contract');
 
+        $I->amOnUrl(
+            $webDriverHelper->getInstanceURL()
+        );
+
         // Navigate to accounts list-view
         $I->loginAsAdmin();
-        $I->visitPage('Accounts', 'index');
+        $account->gotoAccounts();
         $listView->waitForListViewVisible();
 
         // Create account
@@ -77,7 +91,7 @@ class ContractsCest
         $account->createAccount($account_name);
 
         // Navigate to contracts list-view
-        $I->visitPage('AOS_Contracts', 'index');
+        $contract->gotoContracts();
         $listView->waitForListViewVisible();
 
         // Create contract
@@ -90,7 +104,7 @@ class ContractsCest
         $listView->waitForListViewVisible();
 
         // Delete account
-        $I->visitPage('Accounts', 'index');
+        $account->gotoAccounts();
         $listView->waitForListViewVisible();
         $listView->clickFilterButton();
         $I->fillField('#name_basic', $account_name);

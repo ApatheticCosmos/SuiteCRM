@@ -30,18 +30,26 @@ class EventsCest
     /**
      * @param \AcceptanceTester $I
      * @param \Step\Acceptance\ListView $listView
+     * @param \Step\Acceptance\Events $events
+     * @param \Helper\WebDriverHelper $webDriverHelper
      *
      * As an administrator I want to view the events module.
      */
     public function testScenarioViewEventsModule(
         \AcceptanceTester $I,
-        \Step\Acceptance\ListView $listView
+        \Step\Acceptance\ListView $listView,
+        \Step\Acceptance\Events $events,
+        \Helper\WebDriverHelper $webDriverHelper
     ) {
         $I->wantTo('View the events module for testing');
 
+        $I->amOnUrl(
+            $webDriverHelper->getInstanceURL()
+        );
+
         // Navigate to events list-view
         $I->loginAsAdmin();
-        $I->visitPage('FP_events', 'index');
+        $events->gotoEvents();
         $listView->waitForListViewVisible();
 
         $I->see('Events', '.module-title-text');
@@ -53,6 +61,7 @@ class EventsCest
      * @param \Step\Acceptance\ListView $listView
      * @param \Step\Acceptance\Events $event
      * @param \Step\Acceptance\Locations $location
+     * @param \Helper\WebDriverHelper $webDriverHelper
      *
      * As administrative user I want to create an event so that I can test
      * the standard fields.
@@ -62,13 +71,18 @@ class EventsCest
         \Step\Acceptance\DetailView $detailView,
         \Step\Acceptance\ListView $listView,
         \Step\Acceptance\Events $event,
-        \Step\Acceptance\Locations $location
+        \Step\Acceptance\Locations $location,
+        \Helper\WebDriverHelper $webDriverHelper
     ) {
         $I->wantTo('Create an Event');
 
+        $I->amOnUrl(
+            $webDriverHelper->getInstanceURL()
+        );
+
         // Navigate to locations list-view
         $I->loginAsAdmin();
-        $I->visitPage('FP_Event_Locations', 'index');
+        $location->gotoLocations();
         $listView->waitForListViewVisible();
 
         // Create location
@@ -77,7 +91,7 @@ class EventsCest
         $location->createEventLocation($location_name);
 
         // Navigate to events list-view
-        $I->visitPage('FP_events', 'index');
+        $event->gotoEvents();
         $listView->waitForListViewVisible();
 
         // Create event
@@ -90,7 +104,7 @@ class EventsCest
         $listView->waitForListViewVisible();
 
         // Delete location
-        $I->visitPage('FP_Event_Locations', 'index');
+        $location->gotoLocations();
         $listView->waitForListViewVisible();
         $listView->clickFilterButton();
         $I->fillField('#name_basic', $location_name);

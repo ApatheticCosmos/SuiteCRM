@@ -30,18 +30,26 @@ class jjwg_AreasCest
     /**
      * @param \AcceptanceTester $I
      * @param \Step\Acceptance\ListView $listView
+     * @param \Step\Acceptance\MapsAreas $mapsAreas
+     * @param \Helper\WebDriverHelper $webDriverHelper
      *
      * As an administrator I want to view the mapsAreas module.
      */
     public function testScenarioViewMapsAreasModule(
         \AcceptanceTester $I,
-        \Step\Acceptance\ListView $listView
+        \Step\Acceptance\ListView $listView,
+        \Step\Acceptance\MapsAreas $mapsAreas,
+        \Helper\WebDriverHelper $webDriverHelper
     ) {
         $I->wantTo('View the mapsAreas module for testing');
-        
-        $I->loginAsAdmin();
+
+        $I->amOnUrl(
+            $webDriverHelper->getInstanceURL()
+        );
+
         // Navigate to mapsAreas list-view
-        $I->visitPage('jjwg_Areas', 'index');
+        $I->loginAsAdmin();
+        $mapsAreas->gotoMapsAreas();
         $listView->waitForListViewVisible();
 
         $I->see('Maps - Areas', '.module-title-text');

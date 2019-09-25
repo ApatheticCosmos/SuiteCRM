@@ -30,17 +30,26 @@ class AM_Project_TemplatesCest
     /**
      * @param \AcceptanceTester $I
      * @param \Step\Acceptance\ListView $listView
+     * @param \Step\Acceptance\ProjectTemplates $projectTemplates
+     * @param \Helper\WebDriverHelper $webDriverHelper
      *
      * As an administrator I want to view the projectTemplates module.
      */
     public function testScenarioViewProjectTemplatesModule(
         \AcceptanceTester $I,
-        \Step\Acceptance\ListView $listView
+        \Step\Acceptance\ListView $listView,
+        \Step\Acceptance\ProjectTemplates $projectTemplates,
+        \Helper\WebDriverHelper $webDriverHelper
     ) {
         $I->wantTo('View the projectTemplates module for testing');
+
+        $I->amOnUrl(
+            $webDriverHelper->getInstanceURL()
+        );
+
         // Navigate to projectTemplates list-view
         $I->loginAsAdmin();
-        $I->visitPage('AM_ProjectTemplates', 'index');
+        $projectTemplates->gotoProjectTemplates();
         $listView->waitForListViewVisible();
 
         $I->see('Projects - Templates', '.module-title-text');
@@ -51,6 +60,7 @@ class AM_Project_TemplatesCest
      * @param \Step\Acceptance\DetailView $detailView
      * @param \Step\Acceptance\ListView $listView
      * @param \Step\Acceptance\ProjectTemplates $projectTemplate
+     * @param \Helper\WebDriverHelper $webDriverHelper
      *
      * As administrative user I want to create a project template so that I can test
      * the standard fields.
@@ -59,13 +69,18 @@ class AM_Project_TemplatesCest
         \AcceptanceTester $I,
         \Step\Acceptance\DetailView $detailView,
         \Step\Acceptance\ListView $listView,
-        \Step\Acceptance\ProjectTemplates $projectTemplate
+        \Step\Acceptance\ProjectTemplates $projectTemplate,
+        \Helper\WebDriverHelper $webDriverHelper
     ) {
         $I->wantTo('Create a project template');
 
+        $I->amOnUrl(
+            $webDriverHelper->getInstanceURL()
+        );
+
         // Navigate to project templates list-view
         $I->loginAsAdmin();
-        $I->visitPage('AM_ProjectTemplates', 'index');
+        $projectTemplate->gotoProjectTemplates();
         $listView->waitForListViewVisible();
 
         // Create project template

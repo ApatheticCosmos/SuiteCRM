@@ -30,18 +30,26 @@ class AOS_PDF_TemplatesCest
     /**
      * @param \AcceptanceTester $I
      * @param \Step\Acceptance\ListView $listView
+     * @param \Step\Acceptance\PDFTemplates $pdfTemplates
+     * @param \Helper\WebDriverHelper $webDriverHelper
      *
      * As an administrator I want to view the pdfTemplates module.
      */
     public function testScenarioViewPDFTemplatesModule(
         \AcceptanceTester $I,
-        \Step\Acceptance\ListView $listView
+        \Step\Acceptance\ListView $listView,
+        \Step\Acceptance\PDFTemplates $pdfTemplates,
+        \Helper\WebDriverHelper $webDriverHelper
     ) {
         $I->wantTo('View the pdfTemplates module for testing');
 
+        $I->amOnUrl(
+            $webDriverHelper->getInstanceURL()
+        );
+
         // Navigate to pdfTemplates list-view
         $I->loginAsAdmin();
-        $I->visitPage('AOS_PDF_Templates', 'index');
+        $pdfTemplates->gotoPDFTemplates();
         $listView->waitForListViewVisible();
 
         $I->see('PDF - Templates', '.module-title-text');
@@ -52,6 +60,7 @@ class AOS_PDF_TemplatesCest
      * @param \Step\Acceptance\DetailView $detailView
      * @param \Step\Acceptance\ListView $listView
      * @param \Step\Acceptance\PDFTemplates $pdfTemplate
+     * @param \Helper\WebDriverHelper $webDriverHelper
      *
      * As administrative user I want to create a PDF template so that I can test
      * the standard fields.
@@ -60,13 +69,18 @@ class AOS_PDF_TemplatesCest
         \AcceptanceTester $I,
         \Step\Acceptance\DetailView $detailView,
         \Step\Acceptance\ListView $listView,
-        \Step\Acceptance\PDFTemplates $pdfTemplate
+        \Step\Acceptance\PDFTemplates $pdfTemplate,
+        \Helper\WebDriverHelper $webDriverHelper
     ) {
         $I->wantTo('Create a PDF Template');
 
+        $I->amOnUrl(
+            $webDriverHelper->getInstanceURL()
+        );
+
         // Navigate to PDF Template list-view
         $I->loginAsAdmin();
-        $I->visitPage('AOS_PDF_Templates', 'index');
+        $pdfTemplate->gotoPDFTemplates();
         $listView->waitForListViewVisible();
 
         // Create PDF Template

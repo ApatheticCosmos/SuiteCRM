@@ -42,6 +42,7 @@ if (!defined('sugarEntry') || !sugarEntry) {
     die('Not A Valid Entry Point');
 }
 
+require_once 'include/MVC/View/views/view.list.php';
 require_once 'modules/Spots/SpotsListViewSmarty.php';
 
 class SpotsViewList extends ViewList

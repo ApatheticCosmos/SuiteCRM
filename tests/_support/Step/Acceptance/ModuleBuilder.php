@@ -1,6 +1,7 @@
 <?php
 namespace Step\Acceptance;
 
+
 use Helper\WebDriverHelper;
 use SuiteCRM\Enumerator\SugarObjectType;
 
@@ -16,14 +17,13 @@ class ModuleBuilder extends Administration
     {
         $I = $this;
 
-        $I->visitPage('Administration', 'index');
+        $I->gotoAdministration();
 
         // Go To Module Builder
         $I->click('#moduleBuilder');
 
         $packageExists = $I->seePageHas($packageName, '#Buttons');
-        if ($packageExists === false) {
-            $I->waitForElementVisible('#newPackageLink');
+        if($packageExists === false) {
             // Create new package
             $I->click('#newPackageLink');
 
@@ -45,7 +45,8 @@ class ModuleBuilder extends Administration
             $I->checkOption('[name=importable]');
 
 
-            switch ($moduleType) {
+            switch ($moduleType)
+            {
                 case SugarObjectType::basic:
                     $I->click('#type_basic');
                     break;
@@ -79,6 +80,9 @@ class ModuleBuilder extends Administration
             $I->deployPackage($packageName);
             // Redeploy @TODO seperate this out to new test
             $I->deployPackage($packageName, true);
+
+
+
         } else {
             $I->getScenario()->skip($packageName . ' already exists. Please remove package and module manually.');
         }
@@ -92,13 +96,13 @@ class ModuleBuilder extends Administration
     {
         $I = $this;
 
-        $I->visitPage('Administration', 'index');
+        $I->gotoAdministration();
 
         // Go To Module Builder
         $I->click('#moduleBuilder');
-        $I->waitForElementVisible('.bodywrapper');
+        $I->waitForElementVisible('.bodywrapper', 30);
         $I->click($packageName, '.bodywrapper');
-        $I->waitForElementVisible(['name' => 'author']);
+        $I->waitForElementVisible(['name' => 'author'], 30);
     }
 
 
@@ -110,23 +114,23 @@ class ModuleBuilder extends Administration
     {
         $I = $this;
 
-        $I->visitPage('Administration', 'index');
+        $I->gotoAdministration();
 
         // Go To Module Builder
         $I->click('#moduleBuilder');
-        $I->waitForElementVisible('.bodywrapper');
+        $I->waitForElementVisible('.bodywrapper', 30);
         $I->click($packageName, '.bodywrapper');
-        $I->waitForElementVisible(['name' => 'author']);
+        $I->waitForElementVisible(['name' => 'author'], 30);
         $I->click($moduleName, '#package_modules');
-        $I->waitForElementVisible(['name' => 'savebtn']);
+        $I->waitForElementVisible(['name' => 'savebtn'], 30);
     }
 
 
     public function closePopupSuccess()
     {
         $I = $this;
-        $I->waitForElementVisible('#sugarMsgWindow_mask');
-        $I->waitForText('This operation is completed successfully', null, '#sugarMsgWindow_c');
+        $I->waitForElementVisible('#sugarMsgWindow_mask', 30);
+        $I->waitForText('This operation is completed successfully', 30, '#sugarMsgWindow_c');
         $I->click('.container-close');
     }
 
@@ -140,16 +144,16 @@ class ModuleBuilder extends Administration
     {
         $I = $this;
 
-        $I->visitPage('Administration', 'index');
+        $I->gotoAdministration();
 
         // Go To Module Builder
         $I->click('#moduleBuilder');
-        $I->waitForElementVisible('.bodywrapper');
+        $I->waitForElementVisible('.bodywrapper', 30);
         $I->click($packageName, '.bodywrapper');
         $I->waitForElementVisible('[name="name"]');
         $I->click('Deploy');
 
-        if ($packageExists) {
+        if($packageExists) {
             $I->acceptPopup();
         }
 
@@ -157,6 +161,7 @@ class ModuleBuilder extends Administration
         $I->closePopupSuccess();
 
         // Wait for page to refresh and look for new package link
-        $I->waitForElement('#newPackageLink');
+        $I->waitForElement('#newPackageLink', 360);
+
     }
 }

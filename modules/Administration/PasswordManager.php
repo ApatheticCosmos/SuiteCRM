@@ -45,8 +45,6 @@ if (!is_admin($current_user)) {
     sugar_die($GLOBALS['app_strings']['ERR_NOT_ADMIN']);
 }
 
-include_once __DIR__ . '/../../include/Imap/ImapHandlerFactory.php';
-
 function clearPasswordSettings()
 {
     $_POST['passwordsetting_SystemGeneratedPasswordON'] = '';
@@ -65,12 +63,10 @@ function clearPasswordSettings()
 
 require_once('modules/Administration/Forms.php');
 echo getClassicModuleTitle(
-    "Administration",
-    array(
+        "Administration", array(
     "<a href='index.php?module=Administration&action=index'>" . translate('LBL_MODULE_NAME', 'Administration') . "</a>",
     $mod_strings['LBL_MANAGE_PASSWORD_TITLE'],
-        ),
-    false
+        ), false
 );
 require_once('modules/Configurator/Configurator.php');
 $configurator = new Configurator();
@@ -132,7 +128,6 @@ if (!empty($_POST['saveConfig'])) {
         $configurator->config['passwordsetting']['onelower'] = $_POST['passwordsetting_onelower'];
         $configurator->config['passwordsetting']['onenumber'] = $_POST['passwordsetting_onenumber'];
         $configurator->config['passwordsetting']['onespecial'] = $_POST['passwordsetting_onespecial'];
-		$configurator->config['passwordsetting']['minpwdlength'] = $_POST['passwordsetting_minpwdlength'];
 
         $configurator->saveConfig();
 
@@ -149,9 +144,7 @@ require_once('include/SugarLogger/SugarLogger.php');
 $sugar_smarty = new Sugar_Smarty();
 
 // if no IMAP libraries available, disable Save/Test Settings
-$imapFactory = new ImapHandlerFactory();
-$imap = $imapFactory->getImapHandler();
-if (!$imap->isAvailable()) {
+if (!function_exists('imap_open')) {
     $sugar_smarty->assign('IE_DISABLED', 'DISABLED');
 }
 
@@ -167,11 +160,11 @@ $sugar_smarty->assign("settings", $focus->settings);
 
 $sugar_smarty->assign('saml_enabled_checked', false);
 
-if (!function_exists('openssl_encrypt')) {
-    $sugar_smarty->assign("LDAP_ENC_KEY_READONLY", 'readonly');
-    $sugar_smarty->assign("LDAP_ENC_KEY_DESC", $config_strings['LDAP_ENC_KEY_NO_FUNC_OPENSSL_DESC']);
-} else {
-    $sugar_smarty->assign("LDAP_ENC_KEY_DESC", $config_strings['LBL_LDAP_ENC_KEY_DESC']);
+if(!function_exists('openssl_encrypt')){
+	$sugar_smarty->assign("LDAP_ENC_KEY_READONLY", 'readonly');
+	$sugar_smarty->assign("LDAP_ENC_KEY_DESC", $config_strings['LDAP_ENC_KEY_NO_FUNC_OPENSSL_DESC']);
+}else{
+	$sugar_smarty->assign("LDAP_ENC_KEY_DESC", $config_strings['LBL_LDAP_ENC_KEY_DESC']);
 }
 $sugar_smarty->assign("settings", $focus->settings);
 
