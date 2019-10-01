@@ -55,7 +55,7 @@ function display_lines($focus, $field, $value, $view)
             require_once('modules/AOS_Products_Quotes/AOS_Products_Quotes.php');
             require_once('modules/AOS_Line_Item_Groups/AOS_Line_Item_Groups.php');
 
-            $sql = "SELECT pg.id, pg.group_id FROM aos_products_quotes pg LEFT JOIN aos_line_item_groups lig ON pg.group_id = lig.id WHERE pg.parent_type = '" . $focus->object_name . "' AND pg.parent_id = '" . $focus->id . "' AND pg.deleted = 0 ORDER BY lig.number ASC, pg.number ASC";
+            $sql = "SELECT pg.id, pg.group_id, CASE WHEN lig.name LIKE 'Package%' THEN 1 ELSE 9 END as sortme FROM aos_products_quotes pg LEFT JOIN aos_line_item_groups lig ON pg.group_id = lig.id WHERE pg.parent_type = '" . $focus->object_name . "' AND pg.parent_id = '" . $focus->id . "' AND pg.deleted = 0 ORDER BY sortme ASC, lig.number ASC, pg.number ASC";
 
             $result = $focus->db->query($sql);
             $html .= "<script>

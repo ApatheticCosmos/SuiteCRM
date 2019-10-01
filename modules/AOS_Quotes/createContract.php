@@ -53,6 +53,59 @@
     $contract->total_amount = $quote->total_amount;
     $contract->currency_id = $quote->currency_id;
 
+    // SSC Custom Fields
+    $contract->agreement_number_c = date("YmdHis");
+
+    // Inline CSS for recurring table
+    $tablecss = "border-spacing: 0px; border-width: 1px; width: 100%; border-color: #000000; border-style: solid;";
+    $leftcolcss = "text-align: right;";
+    $rightcolcss = "padding: 10px 0px 10px 5px; border-width: 1px; border-color: #000000; border-style: solid;";
+    $textcss = "font-size: x-small;";
+
+    // Recurring Lines
+    $sql = "SELECT
+        ssc_recurring.description,
+        ROUND(SUM(ssc_recurring.monthly),2) AS monthly,
+        CASE
+            WHEN ssc_recurring.recurring_type = 'interactive' THEN 'Interactive Services'
+            WHEN ssc_recurring.recurring_type = 'vitallink' THEN 'VitalLink Monitoring'
+            WHEN ssc_recurring.recurring_type = 'repair' THEN 'Repair/Extended Limited Warranty'
+            ELSE 'Other Recurring'
+        END AS 'type'
+        FROM ssc_recurring
+        JOIN ssc_recurring_aos_quotes_c ON ssc_recurring_aos_quotes_c.ssc_recurring_aos_quotesssc_recurring_idb = ssc_recurring.id
+        JOIN aos_quotes ON aos_quotes.id = ssc_recurring_aos_quotes_c.ssc_recurring_aos_quotesaos_quotes_ida
+        WHERE aos_quotes.id = '".$quote->id."' AND ssc_recurring.deleted = 0
+        GROUP BY ssc_recurring.recurring_type";
+    $result = $this->bean->db->query($sql);
+    $recurringhtml = "<table style=\"" . $tablecss . "\">";
+    $recurringhtml .= "<tr><td colspan=2  style=\"border-width: 1px; border-color: #000000; border-style: solid;\"><span style=\"" . $textcss . "\">CUSTOMER AGREES TO PAY COMPANY, INCLUDING TAX IF APPLICABLE, FOR CENTRAL STATION MONITORING SERVICE AS FOLLOWS:</span></td></tr>";
+    $rowcount = 0;
+    while ($row = $this->bean->db->fetchByAssoc($result)) {
+        $recurringhtml .= "<tr><td style=\"" . $leftcolcss . "\"><span style=\"" . $textcss . "\">" . $row['type'] . "</span></td><td style=\"" . $rightcolcss . "\"><span style=\"" . $textcss . "\">$" . $row['monthly'] . "</span></td></tr>";
+        $rowcount++;
+    }
+
+    // Blank lines to match printed contract
+    while ($rowcount < 7) {
+        $recurringhtml .= "<tr><td style=\"" . $leftcolcss . "\"><span style=\"" . $textcss . "\"></span></td><td style=\"" . $rightcolcss . "\"><span style=\"" . $textcss . "\">$</span></td></tr>";
+        $rowcount++;
+    }
+
+    // Recurring total
+    $sql = "SELECT
+        ROUND(SUM(ssc_recurring.monthly),2) AS total
+        FROM ssc_recurring
+        JOIN ssc_recurring_aos_quotes_c ON ssc_recurring_aos_quotes_c.ssc_recurring_aos_quotesssc_recurring_idb = ssc_recurring.id
+        JOIN aos_quotes ON aos_quotes.id = ssc_recurring_aos_quotes_c.ssc_recurring_aos_quotesaos_quotes_ida
+        WHERE aos_quotes.id = '".$quote->id."' AND ssc_recurring.deleted = 0";
+    $result = $this->bean->db->query($sql);
+    $value = mysqli_fetch_object($result);
+    $recurringhtml .= "<tr><td style=\"" . $leftcolcss . " font-weight: bold;\"><span style=\"" . $textcss . "\">Total:</span></td><td style=\"" . $rightcolcss . " font-weight: bold;\"><span style=\"" . $textcss . "\">$" . $value->total . "</span></td></tr>";
+    $recurringhtml .= "</table>";
+    $GLOBALS['log']->fatal($recurringhtml);
+    $contract->recurring_html_c = $recurringhtml;
+
     $contract->save();
 
     $group_id_map = array();
