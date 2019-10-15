@@ -46,6 +46,7 @@ array(
     array(
         'includes' => array(
             array('file' => 'modules/Reminders/Reminders.js'),
+            array('file' => 'modules/Meetings/location_autofill.js'),
         ),
       'maxColumns' => '2',
       'form' =>
